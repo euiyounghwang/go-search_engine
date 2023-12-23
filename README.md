@@ -1,7 +1,7 @@
 # go-search_engine
 
 
-## Go Env
+#### Go Env
 ```bash
 xcode-select --install
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
@@ -11,7 +11,7 @@ go version
 ```
 
 
-## Run Go
+#### Run Go
 ```bash
 go mod init go-search_engine
 go run ./sample/hello.go
@@ -19,7 +19,7 @@ go build ./sample/hello.go && ./sample/hello
 ```
 
 
-## Run Docker with sample
+#### Run Docker with sample
 ```bash
 go get github.com/labstack/echo/v4
 go get github.com/labstack/echo/v4/middleware
