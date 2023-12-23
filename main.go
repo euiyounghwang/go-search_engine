@@ -20,7 +20,7 @@ func main() {
     })
 
     e.GET("/health", func(c echo.Context) error {
-        return c.String(http.StatusOK, "Health is OK!!")
+        return c.String(http.StatusOK, "Health is OK1234!!")
     })
 
     httpPort := os.Getenv("PORT")

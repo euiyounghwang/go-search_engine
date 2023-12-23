@@ -12,16 +12,16 @@ COPY . .
 # RUN go build
 # Build
 # RUN CGO_ENABLED=0 GOOS=linux go build -o main .
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app .
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o FN-Go-Basic-Services .
 
 FROM alpine:latest as runtime
 RUN apk --no-cache add ca-certificates
 WORKDIR /root/
 
-COPY --from=builder /app/app .
+COPY --from=builder /app/FN-Go-Basic-Services .
 # COPY . FN-Go-Basic-Services
 
-CMD ["./app"]
+CMD ["./FN-Go-Basic-Services"]
 
 # Optional:
 # To bind to a TCP port, runtime parameters must be supplied to the docker command.
