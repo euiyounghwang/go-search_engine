@@ -1,0 +1,402 @@
+version: '3'
+#docker-compose -f ./docker-compose.yml up or docker-compose up
+name: go-search-engine-api
+services:
+  
+  cerebro:
+    image: lmenezes/cerebro:0.9.4
+    ports:
+      - "9009:9000"
+    volumes:
+      - ./monitoring/cerebro/application.conf://opt/cerebro/conf/application.conf
+  
+  alertmanager:
+    image: prom/alertmanager
+    container_name: alertmanager
+    privileged: true
+    volumes:
+      - ./monitoring/alertmanager/alertmanager.yml:/alertmanager.yml
+      - ./monitoring/alertmanager/slack.tmpl:/slack.tmpl
+    command:
+      - '--config.file=/alertmanager.yml'
+      - "--web.external-url=http://localhost:9093"
+    ports:
+      - 9093:9093
+      
+  # docker run --rm -d -p 9090:9090 -v ./prometheus.yml:/etc/prometheus/prometheus.yml ./prometheus:/prometheus    
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    restart: unless-stopped
+    ports:
+      - 9091:9090
+    volumes:
+      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus:/prometheus
+      - ./monitoring/alertmanager/alert_rules.yml:/alertmanager/alert_rules.yml
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=2d # 90일보다 오래된 metrics는 삭제
+      - --storage.tsdb.retention.size=1GB # 10GB를 넘을 시 오래된 metrics 삭제
+      - --web.console.libraries=/usr/share/prometheus/console_libraries
+      - --web.console.templates=/usr/share/proemtheus/consoles
+      - --web.enable-admin-api
+    networks:
+      - bridge
+  
+  elastichq:
+    image: elastichq/elasticsearch-hq
+    container_name: elastichq
+    environment:
+      - HQ_DEFAULT_URL=http://host.docker.internal:9209
+      # - HQ_DEBUG=True
+      # - HQ_ENABLE_SSL=True
+      # - HQ_VERIFY_CERTS=False
+      # - HQ_CA_CERTS=/usr/local/share/ca-certificates/MYCA.crt
+    ports:
+      - 5500:5000
+    networks:
+      - bridge
+    
+  grafana:
+    container_name: grafana-local
+    environment:
+      - GF_INSTALL_PLUGINS=alexanderzobnin-zabbix-app
+      - GF_RENDERING_SERVER_URL=http://host.docker.internal:8088/render
+      - GF_RENDERING_CALLBACK_URL=http://host.docker.internal:3001/
+      - GF_LOG_FILTERS= rendering:debug
+    image: grafana/grafana:latest
+    ports:
+      - 3000:3000/tcp
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped
+    networks:
+      - bridge
+      
+  renderer:
+    image: grafana/grafana-image-renderer
+    restart: always
+    ports:
+      - 8088:8081
+    networks:
+      - bridge
+      
+  # Single Cluster
+  single_node:
+    #image: docker.elastic.co/elasticsearch/elasticsearch:7.10.0
+    build:
+      context: ./Docker/elasticsearch
+      dockerfile: Dockerfile
+    container_name: es-docker-node
+    environment:
+      - node.name=es01
+       - node.master=true
+       - node.data=true
+      #- node.roles=master
+      - cluster.name=es-docker-a-cluster
+      - discovery.seed_hosts=es01
+      - cluster.initial_master_nodes=es01
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+      # - discovery.type=single-node
+      - http.cors.enabled=true
+      - http.cors.allow-origin="*"
+      - http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization
+      - http.cors.allow-credentials=true
+      - xpack.security.enabled=false    
+      # - bootstrap.system_call_filter=false
+      - reindex.remote.whitelist=${NODE_WHITE_LIST}
+    healthcheck:
+      test: curl -s http://localhost:9200 >/dev/null; if [[ $$? == 52 ]]; then echo 0; else echo 1; fi
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - data01:/usr/share/elasticsearch/data
+    ports:
+      - 9221:9200
+    networks:
+      - bridge
+      
+  single_node_kibana:
+    image: docker.elastic.co/kibana/kibana:7.10.0
+    depends_on: {"single_node": {"condition": "service_healthy"}}
+    restart: unless-stopped
+    ports:
+      - 5601:5601
+    environment:
+      SERVERNAME: localhost
+      ELASTICSEARCH_URL: http://single_node:9221
+      ELASTICSEARCH_HOSTS: http://single_node:9221
+          
+  # docker-compose -f ./create-certs.yml run --rm create_certs
+  # docker-compose up -d
+  # Multiple Cluster
+  es01:
+    #image: docker.elastic.co/elasticsearch/elasticsearch:7.10.0
+    container_name: es01
+    build:
+      context: ./Docker/elasticsearch
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      - node.name=es01
+      - node.master=true
+      - node.data=true
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=es02,es03
+      - cluster.initial_master_nodes=es01,es02,es03
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+      # - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - ELASTIC_USERNAME=elastic
+      - ELASTIC_PASSWORD=$ELASTIC_PASSWORD 
+      # - xpack.license.self_generated.type=trial 
+      - xpack.security.enabled=true
+      - xpack.security.http.ssl.enabled=false 
+      - xpack.security.http.ssl.key=$CERTS_DIR/es01/es01.key
+      - xpack.security.http.ssl.certificate_authorities=$CERTS_DIR/ca/ca.crt
+      - xpack.security.http.ssl.certificate=$CERTS_DIR/es01/es01.crt
+      - xpack.security.transport.ssl.enabled=true 
+      - xpack.security.transport.ssl.verification_mode=certificate 
+      - xpack.security.transport.ssl.certificate_authorities=$CERTS_DIR/ca/ca.crt
+      - xpack.security.transport.ssl.certificate=$CERTS_DIR/es01/es01.crt
+      - xpack.security.transport.ssl.key=$CERTS_DIR/es01/es01.key
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - data01:/usr/share/elasticsearch/data
+      - certs:$CERTS_DIR
+    ports:
+      - 9200:9200
+    networks:
+      - bridge
+
+    healthcheck:
+      test: curl --cacert $CERTS_DIR/ca/ca.crt -s https://localhost:9200 >/dev/null; if [[ $$? == 52 ]]; then echo 0; else echo 1; fi
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  es02:
+    #image: docker.elastic.co/elasticsearch/elasticsearch:7.10.0
+    build:
+      context: ./Docker/elasticsearch
+      dockerfile: Dockerfile
+    container_name: es02
+    restart: unless-stopped
+    environment:
+      - node.name=es02
+      - node.master=true
+      - node.data=true
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=es01,es03
+      - cluster.initial_master_nodes=es01,es02,es03
+      - bootstrap.memory_lock=true
+      # - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+      - ELASTIC_USERNAME=elastic
+      - ELASTIC_PASSWORD=$ELASTIC_PASSWORD
+      # - xpack.license.self_generated.type=basic
+      - xpack.security.enabled=true
+      - xpack.security.http.ssl.enabled=false
+      - xpack.security.http.ssl.key=$CERTS_DIR/es02/es02.key
+      - xpack.security.http.ssl.certificate_authorities=$CERTS_DIR/ca/ca.crt
+      - xpack.security.http.ssl.certificate=$CERTS_DIR/es02/es02.crt
+      - xpack.security.transport.ssl.enabled=true
+      - xpack.security.transport.ssl.verification_mode=certificate
+      - xpack.security.transport.ssl.certificate_authorities=$CERTS_DIR/ca/ca.crt
+      - xpack.security.transport.ssl.certificate=$CERTS_DIR/es02/es02.crt
+      - xpack.security.transport.ssl.key=$CERTS_DIR/es02/es02.key
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - data02:/usr/share/elasticsearch/data
+      - certs:$CERTS_DIR
+    ports:
+      - 9210:9200
+    networks:
+      - bridge
+
+  es03:
+    # image: docker.elastic.co/elasticsearch/elasticsearch:7.10.0
+    build:
+      context: ./Docker/elasticsearch
+      dockerfile: Dockerfile
+    container_name: es03
+    restart: unless-stopped
+    environment:
+      - node.name=es03
+      - node.master=true
+      - node.data=true
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=es01,es02
+      - cluster.initial_master_nodes=es01,es02,es03
+      - bootstrap.memory_lock=true
+      # - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+      - ELASTIC_USERNAME=elastic
+      - ELASTIC_PASSWORD=$ELASTIC_PASSWORD
+      # - xpack.license.self_generated.type=basic
+      - xpack.security.enabled=true
+      - xpack.security.http.ssl.enabled=false
+      - xpack.security.http.ssl.key=$CERTS_DIR/es03/es03.key
+      - xpack.security.http.ssl.certificate_authorities=$CERTS_DIR/ca/ca.crt
+      - xpack.security.http.ssl.certificate=$CERTS_DIR/es02/es02.crt
+      - xpack.security.transport.ssl.enabled=true
+      - xpack.security.transport.ssl.verification_mode=certificate
+      - xpack.security.transport.ssl.certificate_authorities=$CERTS_DIR/ca/ca.crt
+      - xpack.security.transport.ssl.certificate=$CERTS_DIR/es03/es03.crt
+      - xpack.security.transport.ssl.key=$CERTS_DIR/es03/es03.key
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - data03:/usr/share/elasticsearch/data
+      - certs:$CERTS_DIR
+    networks:
+      - bridge
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.10.0
+    container_name: kibana
+    depends_on: {"es01": {"condition": "service_healthy"}}
+    restart: unless-stopped
+    ports:
+      - 5601:5601
+    environment:
+      SERVERNAME: localhost
+      ELASTICSEARCH_URL: http://es01:9200
+      ELASTICSEARCH_HOSTS: http://es01:9200
+      ELASTICSEARCH_USERNAME: elastic
+      ELASTICSEARCH_PASSWORD: gsaadmin
+      ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES: $CERTS_DIR/ca/ca.crt
+      # SERVER_SSL_ENABLED: "true"
+      # SERVER_SSL_KEY: $CERTS_DIR/kibana/kib01.key
+      # SERVER_SSL_CERTIFICATE: $CERTS_DIR/kibana/kib01.crt
+    volumes:
+      - certs:$CERTS_DIR
+    networks:
+      - bridge
+  
+  opensearch-node1:
+    image: opensearchproject/opensearch:latest
+    container_name: opensearch-node1
+    environment:
+      - cluster.name=opensearch-cluster
+      - node.name=opensearch-node1
+      - discovery.seed_hosts=opensearch-node1,opensearch-node2
+      - cluster.initial_master_nodes=opensearch-node1,opensearch-node2
+      - bootstrap.memory_lock=true # along with the memlock settings below, disables swapping
+      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m" # minimum and maximum Java heap size, recommend setting both to 50% of system RAM
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536 # maximum number of open files for the OpenSearch user, set to at least 65536 on modern systems
+        hard: 65536
+    volumes:
+      - opensearch-data1:/usr/share/opensearch/data
+    ports:
+      - 9250:9200
+      - 9600:9600 # required for Performance Analyzer
+    networks:
+      - bridge
+      
+  opensearch-node2:
+    image: opensearchproject/opensearch:latest
+    container_name: opensearch-node2
+    environment:
+      - cluster.name=opensearch-cluster
+      - node.name=opensearch-node2
+      - discovery.seed_hosts=opensearch-node1,opensearch-node2
+      - cluster.initial_master_nodes=opensearch-node1,opensearch-node2
+      - bootstrap.memory_lock=true
+      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    volumes:
+      - opensearch-data2:/usr/share/opensearch/data
+    networks:
+      - bridge
+      
+  opensearch-dashboards:
+    image: opensearchproject/opensearch-dashboards:latest
+    container_name: opensearch-dashboards
+    ports:
+      - 5901:5601
+    expose:
+      - "5901"
+    environment:
+      OPENSEARCH_HOSTS: '["https://opensearch-node1:9250","https://opensearch-node2:9250"]'
+    networks:
+      - bridge
+          
+  go-search_engine-api:
+    image: go-search_engine-api:es
+    container_name: go-search_engine-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runtime
+    ports:
+      - 9088:9080
+    volumes:
+      - ${PROJECTS_DIR}/go-search_engine:/app
+    restart: unless-stopped
+    environment:
+      - ES_HOST=http://host.docker.internal:9209
+    networks:
+      - bridge
+      
+  # go-search_engine-api-test:
+  #   image: go-search_engine-api:test
+  #   container_name: go-search_engine-api-test
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #     target: test
+  #   ports:
+  #     - 8889:8889
+  #   volumes:
+  #     - ${PROJECTS_DIR}/python-elasticsearch:/app/FN-Basic-Services
+  #   # restart: unless-stopped
+  #   environment:
+  #     - ES_HOST=http://host.docker.internal:9209
+  #   networks:
+  #     - bridge
+
+volumes:
+  opensearch-data1:
+    driver: local
+  opensearch-data2:
+    driver: local
+  data01:
+    driver: local
+  data02:
+    driver: local
+  data03:
+    driver: local
+  certs:
+    driver: local
+    
+networks:
+  bridge:
+    driver: bridge

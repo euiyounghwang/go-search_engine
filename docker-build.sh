@@ -7,6 +7,6 @@ set -eu
 
 docker build \
   -f "$(dirname "$0")/Dockerfile" \
-  -t go-elasticsearch-api:es \
+  -t go-search_engine-api:es \
   --target runtime \
   "$(dirname "$0")/."
