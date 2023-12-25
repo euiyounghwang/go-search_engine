@@ -4,7 +4,11 @@ go 1.20
 
 require github.com/labstack/echo/v4 v4.11.4
 
+require github.com/elastic/elastic-transport-go/v8 v8.3.0 // indirect
+
 require (
+	github.com/elastic/go-elasticsearch/v7 v7.17.10
+	github.com/elastic/go-elasticsearch/v8 v8.11.1
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/labstack/gommon v0.4.2 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
