@@ -1,12 +1,15 @@
 package main
 
 import (
+	"encoding/json"
 	"errors"
+	"fmt"
 	"log"
 	"os"
 	"reflect"
 
 	elasticsearch "github.com/elastic/go-elasticsearch/v7"
+	"github.com/elastic/go-elasticsearch/v7/esutil"
 	// elasticsearch "github.com/elastic/go-elasticsearch/v8"
 )
 
@@ -102,13 +105,24 @@ func main() {
 	
 	log.Println(docs)
 	
-	// Index the document
-    // _, err = es_client.Index().
-    //     Index(index).
-    //     Type("_doc").
-    //     BodyJson(docs).
-    //     Do(context.Background())
-    // if err != nil {
-    //     panic(err)
-    // }
+	// res, _ = es_client.Index(index, esutil.NewJSONReader(&newDoc1))
+	// fmt.Println(res)
+	
+	res, _ = es_client.Index(index, esutil.NewJSONReader(newDoc1))
+	fmt.Println(res)
+	defer res.Body.Close()
+	
+	// Deserialize the response into a map.
+	var resMap map[string]interface{}
+	if err := json.NewDecoder(res.Body).Decode(&resMap); err != nil {
+		log.Printf("Error parsing the response body: %s", err)
+	} else {
+		log.Printf("\nIndexRequest() RESPONSE:")
+		// Print the response status and indexed document version.
+		fmt.Println("Status:", res.Status())
+		fmt.Println("Result:", resMap["_index"])
+		// fmt.Println("Version:", int(resMap["_version"].(float64)))
+		fmt.Println("resMap:", resMap)
+		fmt.Println("\n")
+	}
 }
