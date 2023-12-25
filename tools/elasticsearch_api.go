@@ -64,9 +64,9 @@ func main() {
         log.Fatal(err)
     }
 
-    if response.IsError() {
-        log.Fatal(err)
-    }
+    // if response.IsError() {
+    //     log.Fatal(err)
+    // }
 	
 	if response.StatusCode == 200 {
 		log.Println("Elasticsearch Indices Created..")
