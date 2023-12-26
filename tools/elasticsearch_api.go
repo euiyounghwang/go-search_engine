@@ -67,6 +67,7 @@ var (
 )
 
 func init() {
+	// https://github.com/elastic/go-elasticsearch/blob/main/_examples/bulk/indexer.go
 	log.Println("init..")
 	// flag.StringVar(&indexName, "index", "test-bulk-example", "Index name")
 	flag.IntVar(&numWorkers, "workers", runtime.NumCPU(), "Number of indexer workers")
