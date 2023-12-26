@@ -4,7 +4,7 @@ import (
 	"flag"
 	"log"
 
-	elasticsearch "github.com/elastic/go-elasticsearch/v8"
+	"example.com/util_elasticsearch"
 )
 
 var (
@@ -32,7 +32,7 @@ func init() {
 	flag.Parse()
 }
 
-
+/*
 func get_es_instance(es_host string) (*elasticsearch.Client) {
 	es_client, err := elasticsearch.NewClient(
 		elasticsearch.Config{
@@ -58,11 +58,12 @@ func validate_es_instance(es_client *elasticsearch.Client) {
 	log.Println(res)
 	log.Printf("Elasticsearch Initializing..")
 }
+*/
 
 func main() {
 	// log.Println("main")
 	log.Printf("es_host url : [%s], index_name : [%s]", es_host, index_name)
 	
-	es_client := get_es_instance(es_host)
-	validate_es_instance(es_client)
+	es_client := util_elasticsearch.Get_es_instance(es_host)
+	util_elasticsearch.Validate_es_instance(es_client)
 }
