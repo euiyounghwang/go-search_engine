@@ -12,6 +12,9 @@ require (
 	github.com/olivere/elastic v6.2.37+incompatible // indirect
 	github.com/olivere/elasticsearch v1.5.1 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
+	github.com/smartystreets/goconvey v1.8.1 // indirect
+	golang.org/x/mod v0.9.0 // indirect
+	golang.org/x/tools v0.7.0 // indirect
 )
 
 require (
