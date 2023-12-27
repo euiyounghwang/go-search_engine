@@ -1,4 +1,4 @@
-package script_elasticsearch_api
+package main
 
 import (
 	"bytes"
@@ -81,6 +81,10 @@ func init() {
 	
 	rand.Seed(time.Now().UnixNano())
 }
+
+/*
+go run ./tools/elasticsearch_api.go
+*/
 
 func main() {
 	
