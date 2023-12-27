@@ -1,26 +1,14 @@
-// module go-search_engine
-module github.com/euiyounghwang/go-search_engine
+module go-search_engine
+// module github.com/euiyounghwang/go-search_engine
 
 go 1.20
 
 require github.com/labstack/echo/v4 v4.11.4
 
-require (
-	github.com/elastic/elastic-transport-go/v8 v8.3.0 // indirect
-	github.com/elastic/go-elasticsearch v0.0.0 // indirect
-	github.com/josharian/intern v1.0.0 // indirect
-	github.com/mailru/easyjson v0.7.7 // indirect
-	github.com/olivere/elastic v6.2.37+incompatible // indirect
-	github.com/olivere/elasticsearch v1.5.1 // indirect
-	github.com/pkg/errors v0.9.1 // indirect
-	github.com/smartystreets/goconvey v1.8.1 // indirect
-	golang.org/x/mod v0.9.0 // indirect
-	golang.org/x/tools v0.7.0 // indirect
-)
+require github.com/elastic/elastic-transport-go/v8 v8.3.0 // indirect
 
 require (
 	github.com/dustin/go-humanize v1.0.1
-	github.com/elastic/go-elasticsearch/v7 v7.17.10
 	github.com/elastic/go-elasticsearch/v8 v8.11.1
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/labstack/gommon v0.4.2 // indirect

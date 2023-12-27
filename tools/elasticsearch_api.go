@@ -1,4 +1,4 @@
-package main
+package script_elasticsearch_api
 
 import (
 	"bytes"

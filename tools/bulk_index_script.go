@@ -1,4 +1,4 @@
-package main
+package script_bulk_elasticsearch
 
 import (
 	"flag"
