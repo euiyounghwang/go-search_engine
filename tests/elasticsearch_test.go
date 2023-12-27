@@ -4,7 +4,8 @@ import (
 	"testing"
 
 	// elasticsearch "github.com/elastic/go-elasticsearch/v8"
-	my_elasticsearch "go-search_engine/lib"
+	// my_elasticsearch "go-search_engine/lib"
+	my_elasticsearch "github.com/euiyounghwang/go-search_engine/lib"
 )
 
 /*

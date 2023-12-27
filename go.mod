@@ -1,4 +1,5 @@
-module go-search_engine
+// module go-search_engine
+module github.com/euiyounghwang/go-search_engine
 
 go 1.20
 
