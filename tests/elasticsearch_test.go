@@ -14,7 +14,7 @@ go test *_test.go -v
 Specific TestFunctionName) $ go test -run TestFunctionName -v
 */
 
-func Test_elastic(t *testing.T) {
+func Test_elasticsearch_instance_status(t *testing.T) {
 	es_host := "http://localhost:9209"
 	es := my_elasticsearch.Get_es_instance(es_host)
     res, err := es.Info()
