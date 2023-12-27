@@ -4,7 +4,7 @@ import (
 	"flag"
 	"log"
 
-	my_elasticsearch "go-search_engine/tools/lib"
+	my_elasticsearch "go-search_engine/lib"
 )
 
 var (
