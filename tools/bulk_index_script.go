@@ -18,7 +18,7 @@ same worker for Python like the following
 parser = argparse.ArgumentParser(description="Index into Elasticsearch using this script")
 parser.add_argument('-e', '--es', dest='es', default="http://localhost:9250", help='host target')
 args = parser.parse_args()
-go run ./tools/bulk_index_script.go --es_host=http://localhost:9209 --index_name=test
+go run ./tools/bulk_index_script.go --es_host=http://localhost:9209 --index_name=test_ominisearch_v1_go
 -------
 */
 func init() {

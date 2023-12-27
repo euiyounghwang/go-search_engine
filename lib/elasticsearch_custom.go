@@ -6,6 +6,7 @@ import (
 	elasticsearch "github.com/elastic/go-elasticsearch/v8"
 )
 
+
 func Get_es_instance(es_host string) (*elasticsearch.Client) {
 	es_client, err := elasticsearch.NewClient(
 		elasticsearch.Config{
