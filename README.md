@@ -70,3 +70,13 @@ Archiving diagnostic results.
 Archive: /Users/euiyoung.hwang/ES/Python_Workspace/python-elasticsearch/local-diagnostics-20231215-160457.tar.gz was created
 Deleted directory: /Users/euiyoung.hwang/ES/Python_Workspace/python-elasticsearch/local-diagnostics.
 ```
+
+
+#### Unit-Test
+```bash
+➜  go-search_engine git:(master) ✗ ./unit_test.sh
+=== RUN   Test_elastic
+--- PASS: Test_elastic (0.03s)
+PASS
+ok      go-search_engine/tests  0.142s
+```

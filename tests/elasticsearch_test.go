@@ -3,7 +3,8 @@ package test
 import (
 	"testing"
 
-	elasticsearch "github.com/elastic/go-elasticsearch/v8"
+	// elasticsearch "github.com/elastic/go-elasticsearch/v8"
+	my_elasticsearch "go-search_engine/tools/lib"
 )
 
 /*
@@ -14,18 +15,7 @@ Specific TestFunctionName) $ go test -run TestFunctionName -v
 
 func Test_elastic(t *testing.T) {
 	es_host := "http://localhost:9209"
-	es, err := elasticsearch.NewClient(
-		elasticsearch.Config{
-        	Addresses: []string{es_host},
-			Username: "elastic",
-			Password: "gsaadmin",
-    	},
-		// elastic.SetURL(host),
-	)
-	if err != nil {
-		panic(err)
-	}
-
+	es := my_elasticsearch.Get_es_instance(es_host)
     res, err := es.Info()
     if err != nil {
      panic(err)
