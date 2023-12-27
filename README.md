@@ -91,7 +91,14 @@ go get github.com/smartystreets/goconvey
 go install github.com/smartystreets/goconvey
 
 cd /Users/euiyoung.hwang/go/pkg/mod/github.com/smartystreets/goconvey@v1.8.1
-go run ./goconvey.go
+
+go-search_engine git:(master) ✗ /Users/euiyoung.hwang/go/bin/goconvey --workDir=$SCRIPTDIR/tests
+go-search_engine git:(master) ✗ ./go_convey.sh                                                                                              
+2023/12/27 14:07:14 goconvey.go:116: GoConvey server: 
+2023/12/27 14:07:14 goconvey.go:121:   version: v1.8.1
+2023/12/27 14:07:14 goconvey.go:122:   host: 127.0.0.1
+2023/12/27 14:07:14 goconvey.go:123:   port: 8080
+...
 ```
 
 #### Unit-Test
