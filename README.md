@@ -88,6 +88,7 @@ Directly integrates with go test; Fully-automatic web UI (works with native Go t
 - Immediately open problem lines in Sublime Text (some assembly required)
 ```bash
 go get github.com/smartystreets/goconvey
+go install github.com/smartystreets/goconvey
 
 cd /Users/euiyoung.hwang/go/pkg/mod/github.com/smartystreets/goconvey@v1.8.1
 go run ./goconvey.go
