@@ -8,6 +8,11 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
+/*
+# Unit Test (*_test.go) ==> ./tests/
+go test ./tests
+*/
+
 func main() {
     e := echo.New()
 
