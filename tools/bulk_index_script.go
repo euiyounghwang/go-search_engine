@@ -4,7 +4,7 @@ import (
 	"flag"
 	"log"
 
-	"example.com/util_elasticsearch"
+	my_elasticsearch "go-search_engine/tools/lib"
 )
 
 var (
@@ -18,7 +18,7 @@ same worker for Python like the following
 parser = argparse.ArgumentParser(description="Index into Elasticsearch using this script")
 parser.add_argument('-e', '--es', dest='es', default="http://localhost:9250", help='host target')
 args = parser.parse_args()
-go run ./tools/bulk_index_script.go --es_host=http://localhost:9200 --index_name=test
+go run ./tools/bulk_index_script.go --es_host=http://localhost:9209 --index_name=test
 -------
 */
 func init() {
@@ -64,6 +64,6 @@ func main() {
 	// log.Println("main")
 	log.Printf("es_host url : [%s], index_name : [%s]", es_host, index_name)
 	
-	es_client := util_elasticsearch.Get_es_instance(es_host)
-	util_elasticsearch.Validate_es_instance(es_client)
+	es_client := my_elasticsearch.Get_es_instance(es_host)
+	my_elasticsearch.Validate_es_instance(es_client)
 }

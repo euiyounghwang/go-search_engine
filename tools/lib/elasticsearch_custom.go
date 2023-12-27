@@ -1,4 +1,4 @@
-package util_elasticsearch
+package lib
 
 import (
 	"log"
@@ -16,7 +16,7 @@ func Get_es_instance(es_host string) (*elasticsearch.Client) {
 		// elastic.SetURL(host),
 	)
 	if err != nil {
-		log.Fatalf("Error getting response: %s", err)
+		log.Fatalf("Error getting response [%s]: %s", es_host, err)
 	}
 	
 	return es_client

@@ -20,7 +20,7 @@ import (
 	// elasticsearch "github.com/elastic/go-elasticsearch/v7"
 
 	"github.com/dustin/go-humanize"
-	"github.com/elastic/go-elasticsearch/v8"
+	elasticsearch "github.com/elastic/go-elasticsearch/v8"
 	"github.com/elastic/go-elasticsearch/v8/esutil"
 )
 

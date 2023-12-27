@@ -31,4 +31,4 @@ require (
 	golang.org/x/time v0.5.0 // indirect
 )
 
-replace example.com/util_elasticsearch => ./tools/lib/util_elasticsearch
+// replace example.com/util_elasticsearch => ./tools/lib/util_elasticsearch
