@@ -100,6 +100,8 @@ go-search_engine git:(master) ✗ ./go_convey.sh
 2023/12/27 14:07:14 goconvey.go:123:   port: 8080
 ...
 ```
+- GoConvey : http://127.0.0.1:7090/
+- /Users/euiyoung.hwang/go/bin/goconvey --workDir=$SCRIPTDIR/tests --port=7090
 
 ![Alt text](./screenshot/Go-Convey.png)
 
