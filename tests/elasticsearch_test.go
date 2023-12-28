@@ -24,6 +24,10 @@ var es_host string = my_elasticsearch.Set_Env(os.Getenv("ES_HOST"), "http://loca
 func Test_elasticsearch_instance_status(t *testing.T) {
 	
 	es := my_elasticsearch.Get_es_instance(es_host)
+	
+	// es is not None
+	assert.Equal(t, es == nil, false)
+	
     res, err := es.Info()
 	log.Println(res)
     if err != nil {
@@ -35,8 +39,12 @@ func Test_elasticsearch_instance_status(t *testing.T) {
 
 
 func Test_elasticsearch_setup(t *testing.T) {
+	
 	index := "test_omnisearch_v1_go"
 	es_client := my_elasticsearch.Get_es_instance(es_host)
+	
+	assert.Equal(t, es_client != nil, true)
+	
 	try_delete_index := func() {
 		response, err := es_client.Indices.Exists([]string{index})
 		log.Println(response)
