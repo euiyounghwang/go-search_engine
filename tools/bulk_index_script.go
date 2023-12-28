@@ -27,7 +27,7 @@ func init() {
 	// wordPtr := flag.String("word", "foo", "a string")
 	// flag.IntVar(es_host, "es_host", "http://localhost:9209", "Host target")
 	
-	flag.StringVar(&index_name, "index_name", "test_omnisearch_v1", "a string")
+	flag.StringVar(&index_name, "index_name", "test_omnisearch_v1_go", "a string")
 	flag.StringVar(&es_host, "es_host", "http://localhost:9209", "Host target")
 	
 	flag.Parse()
