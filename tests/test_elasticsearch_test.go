@@ -6,7 +6,8 @@ import (
 	"testing"
 
 	// elasticsearch "github.com/elastic/go-elasticsearch/v8"
-	my_elasticsearch "go-search_engine/lib"
+	my_elasticsearch "go-search_engine/lib/elasticsearch"
+	util "go-search_engine/lib/util"
 
 	"github.com/stretchr/testify/assert"
 	// my_elasticsearch "github.com/euiyounghwang/go-search_engine/lib"
@@ -18,7 +19,7 @@ go test *_test.go -v
 Specific TestFunctionName) $ go test -run TestFunctionName -v
 */
 
-var es_host = my_elasticsearch.Set_Env(os.Getenv("ES_HOST"), "http://localhost:9209")
+var es_host = util.Set_Env(os.Getenv("ES_HOST"), "http://localhost:9209")
 var es_client = my_elasticsearch.Get_es_instance(es_host)
 // es := my_elasticsearch.Get_es_instance(es_host)
 
