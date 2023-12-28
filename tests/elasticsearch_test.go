@@ -33,7 +33,9 @@ func Test_elasticsearch_instance_status(t *testing.T) {
     if err != nil {
      panic(err)
     }
-    defer res.Body.Close()
+	defer res.Body.Close()
+	
+	assert.Equal(t, res.StatusCode, 200)
 }
 
 
