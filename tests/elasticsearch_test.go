@@ -59,12 +59,21 @@ func Test_elasticsearch_setup(t *testing.T) {
 		}
 	}
 	
-	try_delete_index()
+	try_create_index := func() {
+		res, err := es_client.Indices.Create(index)
+		if err != nil {
+			log.Fatal(err)
+		}
+		log.Println(res)
+		assert.Equal(t, res.StatusCode, 200)
+	}
 	
-	res, err := es_client.Indices.Create(index)
-    if err != nil {
-        log.Fatal(err)
-    }
-	log.Println(res)
-	assert.Equal(t, res.StatusCode, 200)
+	try_create_alias := func() {
+		
+	}
+	
+	try_delete_index()
+	try_create_index()
+	try_create_alias()
+	
 }
