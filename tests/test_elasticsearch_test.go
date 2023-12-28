@@ -41,7 +41,7 @@ func Test_elasticsearch_instance_status(t *testing.T) {
 
 
 
-func Test_elasticsearch_setup(t *testing.T) {
+func Test_elasticsearch_Setup_Environmet(t *testing.T) {
 	
 	index := "test_omnisearch_v1_go"
 	// es_client := my_elasticsearch.Get_es_instance(es_host)
