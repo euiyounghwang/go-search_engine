@@ -1,6 +1,10 @@
 package util
 
-import "log"
+import (
+	"bytes"
+	"encoding/json"
+	"log"
+)
 
 
 func Set_Env(initial_str string, replace_str string) (string) {
@@ -10,4 +14,13 @@ func Set_Env(initial_str string, replace_str string) (string) {
 	}
 	log.Println("Set_Env : ", transform_str)
 	return replace_str
+}
+
+
+func PrettyString(str string) (string) {
+	var prettyJSON bytes.Buffer
+	if err := json.Indent(&prettyJSON, []byte(str), "", "    "); err != nil {
+		return ""
+	}
+	return prettyJSON.String()
 }

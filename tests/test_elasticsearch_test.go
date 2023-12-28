@@ -3,6 +3,7 @@ package test
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"log"
 	"os"
@@ -56,8 +57,12 @@ func Test_elasticsearch_configuration_to_local(t *testing.T) {
 	try_delete_index := func(index string) {
 		response, err := es_client.Indices.Exists([]string{index})
 		log.Println(response)
+		
+		assert.Equal(t, response.StatusCode, 200)
+		
 		if response.StatusCode != 404 {
-			es_client.Indices.Delete([]string{index})
+			res, _ := es_client.Indices.Delete([]string{index})
+			assert.Equal(t, res.StatusCode, 200)
 		}
 		if err != nil {
 			log.Fatal(err)
@@ -109,6 +114,10 @@ func Test_elasticsearch_configuration_to_local(t *testing.T) {
 			log.Fatal(err)
 		}
 		log.Println(res)
+		
+		body, _ := io.ReadAll(res.Body)
+		log.Printf("try_create_index - [%s]", util.PrettyString(string(body)))
+		
 		assert.Equal(t, res.StatusCode, 200)
 	}
 	try_create_index("test_ngram_v1", "./test_mapping/performance_metrics_mapping.json")
