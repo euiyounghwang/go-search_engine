@@ -18,17 +18,18 @@ go test *_test.go -v
 Specific TestFunctionName) $ go test -run TestFunctionName -v
 */
 
-var es_host string = my_elasticsearch.Set_Env(os.Getenv("ES_HOST"), "http://localhost:9209")
-// var es *elasticsearch.Client
+var es_host = my_elasticsearch.Set_Env(os.Getenv("ES_HOST"), "http://localhost:9209")
+var es_client = my_elasticsearch.Get_es_instance(es_host)
+// es := my_elasticsearch.Get_es_instance(es_host)
 
 func Test_elasticsearch_instance_status(t *testing.T) {
 	
-	es := my_elasticsearch.Get_es_instance(es_host)
+	// es_client := my_elasticsearch.Get_es_instance(es_host)
 	
 	// es is not None
-	assert.Equal(t, es == nil, false)
+	assert.Equal(t, es_client == nil, false)
 	
-    res, err := es.Info()
+    res, err := es_client.Info()
 	log.Println(res)
     if err != nil {
      panic(err)
@@ -43,7 +44,7 @@ func Test_elasticsearch_instance_status(t *testing.T) {
 func Test_elasticsearch_setup(t *testing.T) {
 	
 	index := "test_omnisearch_v1_go"
-	es_client := my_elasticsearch.Get_es_instance(es_host)
+	// es_client := my_elasticsearch.Get_es_instance(es_host)
 	
 	assert.Equal(t, es_client != nil, true)
 	
