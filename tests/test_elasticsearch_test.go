@@ -117,6 +117,7 @@ func Test_elasticsearch_configuration_to_local(t *testing.T) {
 		
 		body, _ := io.ReadAll(res.Body)
 		log.Printf("try_create_index - [%s]", util.PrettyString(string(body)))
+		res.Body.Close()
 		
 		assert.Equal(t, res.StatusCode, 200)
 	}
