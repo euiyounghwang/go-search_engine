@@ -210,13 +210,13 @@ func Test_elasticsearch_search(t *testing.T)  {
 	ctx := context.Background()
 	// Search for documents
 	query := `{"query": {"match_all" : {}},"size": 2}`
-	var b strings.Builder
-	b.WriteString(query)
-	read := strings.NewReader(b.String())
+	// var b strings.Builder
+	// b.WriteString(query)
+	// read := strings.NewReader(b.String())
     res, err := es_client.Search(
 		es_client.Search.WithContext(ctx),
 		es_client.Search.WithIndex("test_performance_metrics_v1"),
-		es_client.Search.WithBody(read),
+		es_client.Search.WithBody(strings.NewReader(query)),
 		es_client.Search.WithTrackTotalHits(true),
 		es_client.Search.WithPretty(),
 	)
