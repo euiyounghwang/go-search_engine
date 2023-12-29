@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"strings"
 )
 
 
@@ -15,6 +16,14 @@ func Set_Env(initial_str string, replace_str string) (string) {
 	}
 	log.Println("Set_Env : ", transform_str)
 	return replace_str
+}
+
+func ReplaceStr(str string) (string) {
+	var transformed_strg string = str
+	transformed_strg = strings.Replace(transformed_strg, "\t\t", " ", -1)
+	transformed_strg = strings.Replace(transformed_strg, " ", "", -1)
+	transformed_strg = strings.Replace(transformed_strg, "\t", "", -1)
+	return transformed_strg
 }
 
 func StringJson_to_Json(str []uint8) map[string]interface{}{

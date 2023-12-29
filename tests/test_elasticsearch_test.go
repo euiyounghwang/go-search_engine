@@ -238,6 +238,7 @@ func Test_elasticsearch_search(t *testing.T)  {
 	
 	// foo["value"].([]interface{})[0].(map[string]interface{})["value"].([]interface{})[1].(map[string]interface{})["value"].([]interface{})[0].(map[string]interface{})["value"].([]interface{})[1].(map[string]interface{})["value"].([]interface{})[0].(map[string]interface{})["value"]
 	search_total_count := response_json["hits"].(map[string]interface{})["total"].(map[string]interface{})["value"]
+	// fmt.Println(reflect.TypeOf(search_total_count))
 	assert.Equal(t, search_total_count, float64(1))
 	
 	hits_results := response_json["hits"].(map[string]interface{})["hits"]
