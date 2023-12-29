@@ -16,6 +16,12 @@ func Set_Env(initial_str string, replace_str string) (string) {
 	return replace_str
 }
 
+func StringJson_to_Json(str []uint8) map[string]interface{}{
+	var jsonMap map[string]interface{}
+	json.Unmarshal([]byte(str), &jsonMap)
+	return jsonMap
+}
+
 
 func PrettyString(str string) (string) {
 	var prettyJSON bytes.Buffer

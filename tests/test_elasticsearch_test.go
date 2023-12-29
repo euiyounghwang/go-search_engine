@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"reflect"
 	"strings"
 	"testing"
 
@@ -107,18 +108,22 @@ func Test_elasticsearch_configuration_to_local(t *testing.T) {
 		}
 		}`
 		*/
-		fmt.Println(mapping["settings"])
+		// fmt.Println(mapping["settings"])
 		
 		res, err := es_client.Indices.Create(index, es_client.Indices.Create.WithBody(strings.NewReader(string(mapping_json_raw))))
 		if err != nil {
 			log.Fatal(err)
 		}
-		log.Println(res)
+		// log.Println(res)
 		
 		body, _ := io.ReadAll(res.Body)
 		log.Printf("try_create_index - [%s]", util.PrettyString(string(body)))
 		res.Body.Close()
 		
+		log.Println("type ", reflect.TypeOf(body))
+		response_json := util.StringJson_to_Json(body)
+		log.Printf("Json : %s, parsing : [%s]", response_json, response_json["index"])
+			
 		assert.Equal(t, res.StatusCode, 200)
 	}
 	try_create_index("test_ngram_v1", "./test_mapping/performance_metrics_mapping.json")
