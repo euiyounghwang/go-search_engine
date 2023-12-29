@@ -114,12 +114,12 @@ func Test_elasticsearch_configuration_to_local(t *testing.T) {
 		// log.Println(res)
 		
 		body, _ := io.ReadAll(res.Body)
-		log.Printf("try_create_index - [%s]", util.PrettyString(string(body)))
+		log.Printf("try_create_index - %s", util.PrettyString(string(body)))
 		res.Body.Close()
 		
 		log.Println("type ", reflect.TypeOf(body))
 		response_json := util.StringJson_to_Json(body)
-		log.Printf("Json : %s, parsing : [%s]", response_json, response_json["index"])
+		log.Printf("Json : %s, parsing : %s, %s", response_json, response_json["index"], response_json["acknowledged"])
 			
 		assert.Equal(t, res.StatusCode, 200)
 	}
@@ -196,7 +196,7 @@ func Test_elasticsearch_configuration_to_local(t *testing.T) {
 			log.Fatalf("ERROR: %s", err)
 		}
 		body, _ := io.ReadAll(res.Body)
-		log.Printf("Index_with_document - [%s]", util.PrettyString(string(body)))
+		log.Printf("Index_with_document - %s", util.PrettyString(string(body)))
 		defer res.Body.Close()
 	}
 	
@@ -209,7 +209,13 @@ func Test_elasticsearch_search(t *testing.T)  {
 	
 	ctx := context.Background()
 	// Search for documents
-	query := `{"query": {"match_all" : {}},"size": 2}`
+	query := `{
+		"track_total_hits" : true,
+		"query": {
+			"match_all" : {}
+		},
+		"size": 2
+	}`
 	// var b strings.Builder
 	// b.WriteString(query)
 	// read := strings.NewReader(b.String())
@@ -224,4 +230,13 @@ func Test_elasticsearch_search(t *testing.T)  {
 		log.Fatalf("ERROR: %s", err)
 	}
 	log.Println(res)
+	defer res.Body.Close()
+	
+	assert.Equal(t, res.StatusCode, 200)
+	body, _ := io.ReadAll(res.Body)
+	response_json := util.StringJson_to_Json(body)
+	
+	// foo["value"].([]interface{})[0].(map[string]interface{})["value"].([]interface{})[1].(map[string]interface{})["value"].([]interface{})[0].(map[string]interface{})["value"].([]interface{})[1].(map[string]interface{})["value"].([]interface{})[0].(map[string]interface{})["value"]
+	search_total_count := response_json["hits"].(map[string]interface{})["total"].(map[string]interface{})["value"]
+	assert.Equal(t, search_total_count, float64(1))
 }
