@@ -163,6 +163,20 @@ func Test_elasticsearch_configuration_to_local(t *testing.T) {
 	create_alias("test_performance_metrics_v1", "metrics_search")
 	
 	Index_with_document := func(index string) {
+		/*
+		-- Python
+		es.index(index="test_performance_metrics_v1", id=111, body={
+			"title" :  "performance",
+			"elapsed_time": 0.3,
+			"sequence": 1,
+			"entity_type": "performance",
+			"env" :  "dev",
+			"concurrent_users" :  "20",
+			"search_index" :  "test_performance_metrics_v1",
+			"@timestamp" : "2023-01-01 00:00:00"
+			}
+		)
+		*/
 		res, err := es_client.Index(
 			index,                               // Index name
 			strings.NewReader(`{
