@@ -123,8 +123,8 @@ func Test_elasticsearch_configuration_to_local(t *testing.T) {
 			
 		assert.Equal(t, res.StatusCode, 200)
 	}
-	try_create_index("test_ngram_v1", "./test_mapping/performance_metrics_mapping.json")
-	try_create_index("test_performance_metrics_v1", "./test_mapping/search_ngram_mapping.json")
+	try_create_index("test_ngram_v1", "./test_mapping/search_ngram_mapping.json")
+	try_create_index("test_performance_metrics_v1", "./test_mapping/performance_metrics_mapping.json")
 		
 	create_alias := func(index string, alias string) {
 		
@@ -189,7 +189,7 @@ func Test_elasticsearch_configuration_to_local(t *testing.T) {
 				"search_index" :  "test_performance_metrics_v1",
 				"@timestamp" : "2023-01-01 00:00:00"
 				}`), // Document body
-			es_client.Index.WithDocumentID("1"),            // Document ID
+			es_client.Index.WithDocumentID("111"),            // Document ID
 			es_client.Index.WithRefresh("true"),            // Refresh
 		)
 		if err != nil {
@@ -244,7 +244,7 @@ func Test_elasticsearch_search(t *testing.T)  {
 	hits_results := response_json["hits"].(map[string]interface{})["hits"]
 	jsonStr, _ := json.Marshal(hits_results)
 
-	expected_query := `[{"_id":"1","_index":"test_performance_metrics_v1","_score":1,"_source":{"@timestamp":"2023-01-01 00:00:00","concurrent_users":"20","elapsed_time":0.3,"entity_type":"performance","env":"dev","search_index":"test_performance_metrics_v1","sequence":1,"title":"performance"}}]`
+	expected_query := `[{"_id":"111","_index":"test_performance_metrics_v1","_score":1,"_source":{"@timestamp":"2023-01-01 00:00:00","concurrent_users":"20","elapsed_time":0.3,"entity_type":"performance","env":"dev","search_index":"test_performance_metrics_v1","sequence":1,"title":"performance"}}]`
 	
 	// fmt.Println(string(jsonStr), reflect.TypeOf(string(jsonStr)))
 	// fmt.Println(expected_query, reflect.TypeOf(expected_query))
