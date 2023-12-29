@@ -1,6 +1,8 @@
 package test
 
 import (
+	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -88,11 +90,6 @@ func Test_elasticsearch_configuration_to_local(t *testing.T) {
 		}
 		// fmt.Println(mapping_json_raw)
 		
-		mapping := make(map[string]interface{})
-		if err := json.Unmarshal(mapping_json_raw, &mapping); err != nil {
-			log.Fatal(err)
-		}
-		
 		/*
 		mapping_json_raw := `
 		{
@@ -129,9 +126,65 @@ func Test_elasticsearch_configuration_to_local(t *testing.T) {
 	try_create_index("test_ngram_v1", "./test_mapping/performance_metrics_mapping.json")
 	try_create_index("test_performance_metrics_v1", "./test_mapping/search_ngram_mapping.json")
 		
-	try_create_alias := func() {
+	create_alias := func(index string, alias string) {
 		
+		type UpdateAliasAction struct {
+			Index string `json:"index"`
+			Alias string `json:"alias"`
+		}
+		type UpdateAliasRequest struct {
+			Actions []map[string]*UpdateAliasAction `json:"actions"`
+		}
+		
+		updateActions := make([]map[string]*UpdateAliasAction, 0)
+		addAction := make(map[string]*UpdateAliasAction)
+		addAction["add"] = &UpdateAliasAction{
+			Index: index,
+			Alias: alias,
+		}
+		updateActions = append(updateActions, addAction)
+		jsonBody, err := json.Marshal(&UpdateAliasRequest{
+			Actions: updateActions,
+		})
+		if err != nil {
+			log.Fatal(err)
+		}
+		
+		// make API request
+		res, err := es_client.Indices.UpdateAliases(
+			bytes.NewBuffer(jsonBody),
+			es_client.Indices.UpdateAliases.WithContext(context.Background()),
+		)
+		if err != nil {
+			log.Fatal(err)
+		}
+		log.Println(res)
 	}
-	try_create_alias()
+	create_alias("test_performance_metrics_v1", "metrics_search")
 	
+	Index_with_document := func(index string) {
+		res, err := es_client.Index(
+			index,                               // Index name
+			strings.NewReader(`{
+				"title" :  "performance",
+				"elapsed_time": 0.3,
+				"sequence": 1,
+				"entity_type": "performance",
+				"env" :  "dev",
+				"concurrent_users" :  "20",
+				"search_index" :  "test_performance_metrics_v1",
+				"@timestamp" : "2023-01-01 00:00:00"
+				}`), // Document body
+			es_client.Index.WithDocumentID("1"),            // Document ID
+			es_client.Index.WithRefresh("true"),            // Refresh
+		)
+		if err != nil {
+			log.Fatalf("ERROR: %s", err)
+		}
+		body, _ := io.ReadAll(res.Body)
+		log.Printf("Index_with_document - [%s]", util.PrettyString(string(body)))
+		defer res.Body.Close()
+	}
+	
+	Index_with_document("test_performance_metrics_v1")
 }
