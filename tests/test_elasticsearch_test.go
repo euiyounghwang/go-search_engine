@@ -207,17 +207,21 @@ func Test_elasticsearch_configuration_to_local(t *testing.T) {
 func Test_elasticsearch_search(t *testing.T)  {
 	assert.Equal(t, es_client != nil, true)
 	
-	/*
+	ctx := context.Background()
 	// Search for documents
-    s := `{"query":{"match_all":{}},"sort":[{"price":{"order":"asc"}}]}`
-    res, err := es_client.Search().
-        Index("store2").
-        Source(s).
-        Do()
-    if err != nil {
-        panic(err)
-    }
-
-    fmt.Printf("%d results\n", res.TotalHits)
-	*/
+	query := `{"query": {"match_all" : {}},"size": 2}`
+	var b strings.Builder
+	b.WriteString(query)
+	read := strings.NewReader(b.String())
+    res, err := es_client.Search(
+		es_client.Search.WithContext(ctx),
+		es_client.Search.WithIndex("test_performance_metrics_v1"),
+		es_client.Search.WithBody(read),
+		es_client.Search.WithTrackTotalHits(true),
+		es_client.Search.WithPretty(),
+	)
+	if err != nil {
+		log.Fatalf("ERROR: %s", err)
+	}
+	log.Println(res)
 }
