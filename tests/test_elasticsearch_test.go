@@ -202,3 +202,22 @@ func Test_elasticsearch_configuration_to_local(t *testing.T) {
 	
 	Index_with_document("test_performance_metrics_v1")
 }
+
+
+func Test_elasticsearch_search(t *testing.T)  {
+	assert.Equal(t, es_client != nil, true)
+	
+	/*
+	// Search for documents
+    s := `{"query":{"match_all":{}},"sort":[{"price":{"order":"asc"}}]}`
+    res, err := es_client.Search().
+        Index("store2").
+        Source(s).
+        Do()
+    if err != nil {
+        panic(err)
+    }
+
+    fmt.Printf("%d results\n", res.TotalHits)
+	*/
+}
