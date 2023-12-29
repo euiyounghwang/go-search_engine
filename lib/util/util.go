@@ -3,6 +3,7 @@ package util
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"log"
 )
 
@@ -18,7 +19,10 @@ func Set_Env(initial_str string, replace_str string) (string) {
 
 func StringJson_to_Json(str []uint8) map[string]interface{}{
 	var jsonMap map[string]interface{}
-	json.Unmarshal([]byte(str), &jsonMap)
+	// json.Unmarshal([]byte(str), &jsonMap)
+	if err := json.Unmarshal([]byte(str), &jsonMap); err != nil {
+        fmt.Println(err)
+    }
 	return jsonMap
 }
 

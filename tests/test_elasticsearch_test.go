@@ -239,4 +239,13 @@ func Test_elasticsearch_search(t *testing.T)  {
 	// foo["value"].([]interface{})[0].(map[string]interface{})["value"].([]interface{})[1].(map[string]interface{})["value"].([]interface{})[0].(map[string]interface{})["value"].([]interface{})[1].(map[string]interface{})["value"].([]interface{})[0].(map[string]interface{})["value"]
 	search_total_count := response_json["hits"].(map[string]interface{})["total"].(map[string]interface{})["value"]
 	assert.Equal(t, search_total_count, float64(1))
+	
+	hits_results := response_json["hits"].(map[string]interface{})["hits"]
+	jsonStr, _ := json.Marshal(hits_results)
+
+	expected_query := `[{"_id":"1","_index":"test_performance_metrics_v1","_score":1,"_source":{"@timestamp":"2023-01-01 00:00:00","concurrent_users":"20","elapsed_time":0.3,"entity_type":"performance","env":"dev","search_index":"test_performance_metrics_v1","sequence":1,"title":"performance"}}]`
+	
+	// fmt.Println(string(jsonStr), reflect.TypeOf(string(jsonStr)))
+	// fmt.Println(expected_query, reflect.TypeOf(expected_query))
+	assert.Equal(t, string(jsonStr), expected_query)
 }
