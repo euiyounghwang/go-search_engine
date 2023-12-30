@@ -14,4 +14,5 @@ SCRIPTDIR="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 # Waitng for ES
 ./wait_for_es.sh $ES_HOST
 
-go run ./main.go
+# go run ./main.go
+./main
