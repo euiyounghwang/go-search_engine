@@ -226,6 +226,8 @@ func Test_elasticsearch_search(t *testing.T)  {
 		es_client.Search.WithBody(strings.NewReader(query)),
 		es_client.Search.WithTrackTotalHits(true),
 		es_client.Search.WithPretty(),
+		es_client.Search.WithFrom(0),
+		es_client.Search.WithSize(1000),
 	)
 	if err != nil {
 		log.Fatalf("ERROR: %s", err)
@@ -239,9 +241,9 @@ func Test_elasticsearch_search(t *testing.T)  {
 	response_json := util.StringJson_to_Json(body)
 	
 	// foo["value"].([]interface{})[0].(map[string]interface{})["value"].([]interface{})[1].(map[string]interface{})["value"].([]interface{})[0].(map[string]interface{})["value"].([]interface{})[1].(map[string]interface{})["value"].([]interface{})[0].(map[string]interface{})["value"]
-	search_total_count := response_json["hits"].(map[string]interface{})["total"].(map[string]interface{})["value"]
+	search_total_count := int(response_json["hits"].(map[string]interface{})["total"].(map[string]interface{})["value"].(float64))
 	// fmt.Println(reflect.TypeOf(search_total_count))
-	assert.Equal(t, search_total_count, float64(1))
+	assert.Equal(t, search_total_count, 1)
 	
 	hits_results := response_json["hits"].(map[string]interface{})["hits"]
 	jsonStr, _ := json.Marshal(hits_results)
@@ -251,4 +253,19 @@ func Test_elasticsearch_search(t *testing.T)  {
 	// fmt.Println(string(jsonStr), reflect.TypeOf(string(jsonStr)))
 	// fmt.Println(expected_query, reflect.TypeOf(expected_query))
 	assert.Equal(t, string(jsonStr), expected_query)
+	
+	// https://stackoverflow.com/questions/67567918/go-elasticsearch-fetch-all-documents
+	log.Printf(
+		"[%s] %d hits; took: %dms",
+		res.Status(),
+		int(response_json["hits"].(map[string]interface{})["total"].(map[string]interface{})["value"].(float64)),
+		int(response_json["took"].(float64)),
+	)
+	for _, hit := range response_json["hits"].(map[string]interface{})["hits"].([]interface{}) {
+		doc := hit.(map[string]interface{})
+		source := doc["_source"]
+		fmt.Println("#$%%", source)
+		each_doc := source.(map[string]interface{})
+		fmt.Println("#$%%", each_doc["search_index"])
+	}
 }
