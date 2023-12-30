@@ -8,6 +8,8 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+
+	"github.com/labstack/echo/v4"
 )
 
 /*
@@ -50,4 +52,20 @@ func TestHealthCheckHandler(t *testing.T) {
 	expected := `{"alive": true}`
 	assert.Equal(t, rr.Body.String(), expected)
 	
+}
+
+
+func TestCreateUser(t *testing.T) {
+	t.Run("should return 200 status ok", func(t *testing.T) {
+		e := echo.New()
+		req := httptest.NewRequest(http.MethodGet, "/health12", nil)
+		rec := httptest.NewRecorder()
+		c := e.NewContext(req, rec)
+		fmt.Println(c)
+	  
+		// controller := Controller{}
+		// controller.GetAllBooks(c)
+	  
+		assert.Equal(t, http.StatusOK, rec.Code)
+	   })
 }
