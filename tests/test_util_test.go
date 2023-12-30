@@ -9,6 +9,9 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+/*
+go test -v ./tests/test_util_test.go
+*/
 
 func Test_Get_Env(t *testing.T) {
 	host := util.Set_Env(os.Getenv("ES_HOST"), "http://localhost:9209")

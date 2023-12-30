@@ -25,6 +25,7 @@ import (
 go test  -v
 go test *_test.go -v
 Specific TestFunctionName) $ go test -run TestFunctionName -v
+go test -v ./tests/test_elasticsearch_test.go
 */
 
 var es_host = util.Set_Env(os.Getenv("ES_HOST"), "http://localhost:9209")
@@ -233,6 +234,7 @@ func Test_elasticsearch_search(t *testing.T)  {
 	defer res.Body.Close()
 	
 	assert.Equal(t, res.StatusCode, 200)
+	
 	body, _ := io.ReadAll(res.Body)
 	response_json := util.StringJson_to_Json(body)
 	
