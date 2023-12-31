@@ -219,16 +219,27 @@ func Test_elasticsearch_configuration_to_local(t *testing.T) {
 func Test_elasticsearch_api(t *testing.T) {
 	assert.Equal(t, es_client != nil, true)
 	
+	// Update
+	// es_client.Update(index_name, "111", strings.NewReader(`{doc: { "title": "Go" }}`), es_client.Update.WithRefresh("true"))
+		
 	res, err := es_client.Get(index_name, "111")
 	if err != nil {
 		log.Fatalf("ERROR: %s", err)
 	}
+	log.Println("Test_elasticsearch_api ", res, reflect.TypeOf(res.Body))
+	assert.Equal(t, res.StatusCode, 200)
+	defer res.Body.Close()
+	
+	response_map := func(res_body []uint8)  map[string]interface{} {
+		response_json := util.Uint8_to_Map(res_body)
+		log.Printf("response_map : %s", response_json)
+		return response_json
+	}
 	
 	body, _ := io.ReadAll(res.Body)
-	response_json := util.Uint8_to_Map(body)
-	log.Printf("response GET ID : %s", response_json)
+	response := response_map(body)
 	
-	assert.Equal(t, response_json["_id"], "111")
+	assert.Equal(t, response["_id"], "111")
 }
 
 
