@@ -30,6 +30,7 @@ go test -v ./tests/test_elasticsearch_test.go
 
 var es_host = util.Set_Env(os.Getenv("ES_HOST"), "http://localhost:9209")
 var es_client = my_elasticsearch.Get_es_instance(es_host)
+var index_name string = "test_performance_metrics_v1" 
 // es := my_elasticsearch.Get_es_instance(es_host)
 
 func Test_elasticsearch_instance_status(t *testing.T) {
@@ -117,6 +118,9 @@ func Test_elasticsearch_configuration_to_local(t *testing.T) {
 		body, _ := io.ReadAll(res.Body)
 		log.Printf("try_create_index - %s", util.PrettyString(string(body)))
 		res.Body.Close()
+		
+		ioutil_body, _ := ioutil.ReadAll(res.Body)
+		log.Println("ioUtil ", string(ioutil_body))
 		
 		log.Println("res.Body type - ", reflect.TypeOf(res.Body))
 		log.Println("body type - ", reflect.TypeOf(body))
@@ -212,6 +216,22 @@ func Test_elasticsearch_configuration_to_local(t *testing.T) {
 }
 
 
+func Test_elasticsearch_api(t *testing.T) {
+	assert.Equal(t, es_client != nil, true)
+	
+	res, err := es_client.Get(index_name, "111")
+	if err != nil {
+		log.Fatalf("ERROR: %s", err)
+	}
+	
+	body, _ := io.ReadAll(res.Body)
+	response_json := util.Uint8_to_Map(body)
+	log.Printf("response GET ID : %s", response_json)
+	
+	assert.Equal(t, response_json["_id"], "111")
+}
+
+
 func Test_elasticsearch_search(t *testing.T)  {
 	assert.Equal(t, es_client != nil, true)
 	
@@ -224,6 +244,7 @@ func Test_elasticsearch_search(t *testing.T)  {
 		},
 		"size": 2
 	}`
+	
 	// var b strings.Builder
 	// b.WriteString(query)
 	// read := strings.NewReader(b.String())
