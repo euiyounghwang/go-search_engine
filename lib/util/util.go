@@ -26,7 +26,7 @@ func ReplaceStr(str string) (string) {
 	return transformed_strg
 }
 
-func StringJson_to_Json(str []uint8) map[string]interface{}{
+func Uint8_to_Map(str []uint8) map[string]interface{}{
 	var jsonMap map[string]interface{}
 	// json.Unmarshal([]byte(str), &jsonMap)
 	if err := json.Unmarshal([]byte(str), &jsonMap); err != nil {

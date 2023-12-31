@@ -118,9 +118,16 @@ func Test_elasticsearch_configuration_to_local(t *testing.T) {
 		log.Printf("try_create_index - %s", util.PrettyString(string(body)))
 		res.Body.Close()
 		
-		log.Println("type ", reflect.TypeOf(body))
-		response_json := util.StringJson_to_Json(body)
+		log.Println("res.Body type - ", reflect.TypeOf(res.Body))
+		log.Println("body type - ", reflect.TypeOf(body))
+		
+		response_json := util.Uint8_to_Map(body)
+		log.Println("Uint8_to_Map type - ", reflect.TypeOf(response_json))
 		log.Printf("Json : %s, parsing : %s, %s", response_json, response_json["index"], response_json["acknowledged"])
+		
+		// 2023/12/30 18:02:50 res.Body type -  *http.gzipReader
+		// 2023/12/30 18:02:50 body type -  []uint8
+		// 2023/12/30 18:02:50 Uint8_to_Map type -  map[string]interface {}
 			
 		assert.Equal(t, res.StatusCode, 200)
 	}
@@ -238,7 +245,7 @@ func Test_elasticsearch_search(t *testing.T)  {
 	assert.Equal(t, res.StatusCode, 200)
 	
 	body, _ := io.ReadAll(res.Body)
-	response_json := util.StringJson_to_Json(body)
+	response_json := util.Uint8_to_Map(body)
 	
 	// foo["value"].([]interface{})[0].(map[string]interface{})["value"].([]interface{})[1].(map[string]interface{})["value"].([]interface{})[0].(map[string]interface{})["value"].([]interface{})[1].(map[string]interface{})["value"].([]interface{})[0].(map[string]interface{})["value"]
 	search_total_count := int(response_json["hits"].(map[string]interface{})["total"].(map[string]interface{})["value"].(float64))
@@ -267,5 +274,9 @@ func Test_elasticsearch_search(t *testing.T)  {
 		fmt.Println("#$%%", source)
 		each_doc := source.(map[string]interface{})
 		fmt.Println("#$%%", each_doc["search_index"])
+	}
+	
+	for k, v := range response_json["hits"].(map[string]interface{})["hits"].([]interface{}) {
+		fmt.Println("simple test", "k", k, "v", v)
 	}
 }
