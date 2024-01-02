@@ -90,7 +90,7 @@ $ swag init
 go get -u github.com/swaggo/gin-swagger
 go get -u github.com/swaggo/files
 ```
-![Alt text](./screenshot/Golang-Swagger.png
+![Alt text](./screenshot/Golang-Swagger.png)
 
 
 #### Elasticsearh Cluster Diagnostics (Support by Elasticsearch)
