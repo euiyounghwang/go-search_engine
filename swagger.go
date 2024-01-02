@@ -6,11 +6,11 @@ import (
 	"net/http"
 	"os"
 
+	swagger_search "go-search_engine/swagger_controller"
+
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-
-	swagger_search "go-search_engine/swagger_controller"
 )
 
 /* 아래 항목이 swagger에 의해 문서화 된다. */
@@ -31,9 +31,9 @@ import (
 func main() {
 	r := gin.Default()
 
-	//코드로 SwaggerInfo 속성을 지정해지만 doc.json 정상적으로 조회된다.
+	// https://github.com/swaggo/swag/blob/master/README.md
 	docs.SwaggerInfo.Title = "Golang Rest API"
-
+	
     // 127.0.0.1:8080/docs/index.html 주로 swagger로 생성된 문서를 확인 수 있다. 
 	r.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
@@ -46,7 +46,7 @@ func main() {
 	
 	v1Search := r.Group("/")
 	{
-		v1Search.GET("/es/search", swagger_search.SearchHandler)
+		v1Search.POST("/es/search", swagger_search.SearchHandler)
 	}
 	
 	httpPort := os.Getenv("PORT")

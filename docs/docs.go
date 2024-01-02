@@ -36,7 +36,7 @@ const docTemplate = `{
             }
         },
         "/es/search": {
-            "get": {
+            "post": {
                 "description": "search engine api",
                 "consumes": [
                     "application/json"
@@ -48,12 +48,35 @@ const docTemplate = `{
                     "Search"
                 ],
                 "summary": "search engine api",
+                "parameters": [
+                    {
+                        "description": "Search Info Body",
+                        "name": "search",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/swagger_search.Search"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "OK"
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/swagger_search.Search"
+                        }
                     },
                     "400": {
-                        "description": "Bad Request"
+                        "description": "We need ID!!",
+                        "schema": {
+                            "$ref": "#/definitions/swagger_search.APIError"
+                        }
+                    },
+                    "404": {
+                        "description": "Can not find ID",
+                        "schema": {
+                            "$ref": "#/definitions/swagger_search.APIError"
+                        }
                     }
                 }
             }
@@ -93,6 +116,37 @@ const docTemplate = `{
     },
     "definitions": {
         "main.Users": {
+            "type": "object",
+            "properties": {
+                "age": {
+                    "description": "Age",
+                    "type": "integer",
+                    "example": 10
+                },
+                "id": {
+                    "description": "UserId",
+                    "type": "integer",
+                    "example": 1
+                },
+                "name": {
+                    "description": "Name",
+                    "type": "string",
+                    "example": "John"
+                }
+            }
+        },
+        "swagger_search.APIError": {
+            "type": "object",
+            "properties": {
+                "errorCode": {
+                    "type": "integer"
+                },
+                "errorMessage": {
+                    "type": "string"
+                }
+            }
+        },
+        "swagger_search.Search": {
             "type": "object",
             "properties": {
                 "age": {

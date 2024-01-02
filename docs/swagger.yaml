@@ -14,6 +14,28 @@ definitions:
         example: John
         type: string
     type: object
+  swagger_search.APIError:
+    properties:
+      errorCode:
+        type: integer
+      errorMessage:
+        type: string
+    type: object
+  swagger_search.Search:
+    properties:
+      age:
+        description: Age
+        example: 10
+        type: integer
+      id:
+        description: UserId
+        example: 1
+        type: integer
+      name:
+        description: Name
+        example: John
+        type: string
+    type: object
 info:
   contact: {}
 paths:
@@ -31,17 +53,32 @@ paths:
           description: Bad Request
       summary: test swagger api
   /es/search:
-    get:
+    post:
       consumes:
       - application/json
       description: search engine api
+      parameters:
+      - description: Search Info Body
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/swagger_search.Search'
       produces:
       - application/json
       responses:
         "200":
           description: OK
+          schema:
+            $ref: '#/definitions/swagger_search.Search'
         "400":
-          description: Bad Request
+          description: We need ID!!
+          schema:
+            $ref: '#/definitions/swagger_search.APIError'
+        "404":
+          description: Can not find ID
+          schema:
+            $ref: '#/definitions/swagger_search.APIError'
       summary: search engine api
       tags:
       - Search

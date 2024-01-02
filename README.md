@@ -79,6 +79,8 @@ docs
 
 
 2) 
+
+# https://github.com/swaggo/gin-swagger
 # https://dadev.tistory.com/entry/GO-RESTAPI-%EB%AC%B8%EC%84%9C%ED%99%94-%EB%8F%84%EA%B5%AC-Swagger-Gin-Framework-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0
 
 # http://localhost:9081/docs/index.html
