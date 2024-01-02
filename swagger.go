@@ -9,6 +9,8 @@ import (
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+
+	swagger_search "go-search_engine/swagger_controller"
 )
 
 /* 아래 항목이 swagger에 의해 문서화 된다. */
@@ -44,7 +46,7 @@ func main() {
 	
 	v1Search := r.Group("/")
 	{
-		v1Search.GET("/es/search", SearchHandler)
+		v1Search.GET("/es/search", swagger_search.SearchHandler)
 	}
 	
 	httpPort := os.Getenv("PORT")
@@ -74,8 +76,7 @@ func defaultHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "hello world!"})
 }
 
-
-/* 아래 항목이 swagger에 의해 문서화 된다. */
+/*
 // SearchHandler godoc
 // @Summary search engine api
 // @tags Search
@@ -89,7 +90,7 @@ func defaultHandler(c *gin.Context) {
 func SearchHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "hello world!"})
 }
-
+*/
 
 /* 아래 항목이 swagger에 의해 문서화 된다. */
 // HelloHandler godoc
