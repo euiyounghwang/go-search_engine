@@ -3,15 +3,21 @@ package main
 import (
 	// "go_swagger/docs"
 	"go-search_engine/docs"
+	"go-search_engine/lib/util"
 	"net/http"
 	"os"
 
-	controller "go-search_engine/swagger_controller"
+	controller "go-search_engine/controller"
 
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
+
+
+func init_params(c *gin.Context) {
+	c.Set("ES_HOST", util.Set_Env(os.Getenv("ES_HOST"), "http://localhost:9209"))
+}
 
 /* 아래 항목이 swagger에 의해 문서화 된다. */
 // @title Swagger Example API
@@ -46,8 +52,8 @@ func main() {
 	
 	v1Search := r.Group("/")
 	{
-		v1Search.GET("/health", controller.HealthHandler)
-		v1Search.POST("/es/search", controller.SearchHandler)
+		v1Search.GET("/health", init_params, controller.HealthHandler)
+		v1Search.POST("/es/search", init_params, controller.SearchHandler)
 	}
 	
 	httpPort := os.Getenv("PORT")
