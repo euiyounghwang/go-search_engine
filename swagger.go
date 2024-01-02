@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"os"
 
-	swagger_search "go-search_engine/swagger_controller"
+	controller "go-search_engine/swagger_controller"
 
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
@@ -46,7 +46,8 @@ func main() {
 	
 	v1Search := r.Group("/")
 	{
-		v1Search.POST("/es/search", swagger_search.SearchHandler)
+		v1Search.GET("/health", controller.HealthHandler)
+		v1Search.POST("/es/search", controller.SearchHandler)
 	}
 	
 	httpPort := os.Getenv("PORT")

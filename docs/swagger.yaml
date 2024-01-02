@@ -14,14 +14,7 @@ definitions:
         example: John
         type: string
     type: object
-  swagger_search.APIError:
-    properties:
-      errorCode:
-        type: integer
-      errorMessage:
-        type: string
-    type: object
-  swagger_search.Search:
+  repository.Search:
     properties:
       age:
         description: Age
@@ -63,22 +56,45 @@ paths:
         name: search
         required: true
         schema:
-          $ref: '#/definitions/swagger_search.Search'
+          $ref: '#/definitions/repository.Search'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/swagger_search.Search'
+            $ref: '#/definitions/repository.Search'
         "400":
-          description: We need ID!!
+          description: Bad Request
           schema:
-            $ref: '#/definitions/swagger_search.APIError'
+            type: object
         "404":
-          description: Can not find ID
+          description: Not Found
           schema:
-            $ref: '#/definitions/swagger_search.APIError'
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      summary: search engine api
+      tags:
+      - Search
+  /health:
+    get:
+      consumes:
+      - application/json
+      description: search engine api
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
       summary: search engine api
       tags:
       - Search

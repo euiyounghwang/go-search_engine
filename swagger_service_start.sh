@@ -1,5 +1,10 @@
 #!/bin/bash
 set -e
+
+# --
+export PATH=$(go env GOPATH)/bin:$PATH
+# --
+
 source ./DevOps_Shell/read_config.sh
 
 # --
@@ -12,6 +17,7 @@ SCRIPTDIR="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 
 # --
 # swag init
+# Finally, it’s time to generate the docs! All you need is one command —
 swag init
 
 # --
@@ -24,7 +30,8 @@ if [[ -z "$PORT" ]]; then
     echo $PORT
 fi
 
-# export PORT=9088
+# export ES_HOST=9206
+# echo $ES_HOST
 
-go run ./swagger.go $PORT
+go run ./swagger.go
 # ./swagger

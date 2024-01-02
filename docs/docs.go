@@ -55,7 +55,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/swagger_search.Search"
+                            "$ref": "#/definitions/repository.Search"
                         }
                     }
                 ],
@@ -63,19 +63,54 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/swagger_search.Search"
+                            "$ref": "#/definitions/repository.Search"
                         }
                     },
                     "400": {
-                        "description": "We need ID!!",
+                        "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/swagger_search.APIError"
+                            "type": "object"
                         }
                     },
                     "404": {
-                        "description": "Can not find ID",
+                        "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/swagger_search.APIError"
+                            "type": "object"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
+        "/health": {
+            "get": {
+                "description": "search engine api",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Search"
+                ],
+                "summary": "search engine api",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object"
                         }
                     }
                 }
@@ -135,18 +170,7 @@ const docTemplate = `{
                 }
             }
         },
-        "swagger_search.APIError": {
-            "type": "object",
-            "properties": {
-                "errorCode": {
-                    "type": "integer"
-                },
-                "errorMessage": {
-                    "type": "string"
-                }
-            }
-        },
-        "swagger_search.Search": {
+        "repository.Search": {
             "type": "object",
             "properties": {
                 "age": {
