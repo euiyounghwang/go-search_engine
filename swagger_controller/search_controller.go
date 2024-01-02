@@ -31,9 +31,9 @@ func SearchHandler(c *gin.Context) {
 */
 
 // HealthHandler godoc
-// @Summary search engine api
+// @Summary search engine health
 // @tags Search
-// @Description search engine api
+// @Description search engine health
 // @Accept  json
 // @Produce  json
 // @Router /health [get]
