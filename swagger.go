@@ -42,6 +42,11 @@ func main() {
 		v1Group.GET("/hello/:name", HelloHandler)
 	}
 	
+	v1Search := r.Group("/")
+	{
+		v1Search.GET("/es/search", SearchHandler)
+	}
+	
 	httpPort := os.Getenv("PORT")
     if httpPort == "" {
         httpPort = "9081"
@@ -66,6 +71,22 @@ type Users struct {
 // @Success 200 
 // @Failure 400
 func defaultHandler(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{"message": "hello world!"})
+}
+
+
+/* 아래 항목이 swagger에 의해 문서화 된다. */
+// SearchHandler godoc
+// @Summary search engine api
+// @tags Search
+// @Description search engine api
+// @name get-string-by-int
+// @Accept  json
+// @Produce  json
+// @Router /es/search [get]
+// @Success 200 
+// @Failure 400
+func SearchHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "hello world!"})
 }
 

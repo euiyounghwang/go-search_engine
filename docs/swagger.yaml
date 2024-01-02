@@ -30,6 +30,21 @@ paths:
         "400":
           description: Bad Request
       summary: test swagger api
+  /es/search:
+    get:
+      consumes:
+      - application/json
+      description: search engine api
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+      summary: search engine api
+      tags:
+      - Search
   /hello/{name}:
     get:
       consumes:
