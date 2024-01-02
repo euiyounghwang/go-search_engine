@@ -81,6 +81,7 @@ docs
 2) 
 
 # https://github.com/swaggo/gin-swagger
+# https://santoshk.dev/posts/2022/how-to-integrate-swagger-ui-in-go-backend-gin-edition/
 # https://dadev.tistory.com/entry/GO-RESTAPI-%EB%AC%B8%EC%84%9C%ED%99%94-%EB%8F%84%EA%B5%AC-Swagger-Gin-Framework-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0
 
 # http://localhost:9081/docs/index.html
@@ -96,7 +97,7 @@ go get -u github.com/swaggo/files
 
 go mod tidy
 ```
-![Alt text](./screenshot/Golang-Swagger.png)
+![Alt text](./screenshot/Golang-Swagger-API.png)
 
 
 #### Elasticsearh Cluster Diagnostics (Support by Elasticsearch)
