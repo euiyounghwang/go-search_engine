@@ -62,6 +62,8 @@ $ go get github.com/swaggo/echo-swagger
 # https://github.com/swaggo/swag/issues/197
 go install github.com/swaggo/swag/cmd/swag@latest
 
+$ swag 
+
 # or $ swag init -g something.go
 $ swag init 
 
@@ -81,7 +83,9 @@ docs
 
 go get -u github.com/swaggo/swag/cmd/swag
 
-swag
+$ swag 
+# or $ swag init -g something.go
+$ swag init 
 
 go get -u github.com/swaggo/gin-swagger
 go get -u github.com/swaggo/files
