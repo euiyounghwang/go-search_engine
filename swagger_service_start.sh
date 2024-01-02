@@ -18,5 +18,13 @@ swag init
 # Waitng for ES
 ./wait_for_es.sh $ES_HOST
 
-go run ./swagger.go
+if [[ -z "$PORT" ]]; then
+    echo "Variable is empty"
+    export PORT=9081
+    echo $PORT
+fi
+
+# export PORT=9088
+
+go run ./swagger.go $PORT
 # ./swagger
