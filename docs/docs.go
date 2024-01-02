@@ -89,7 +89,7 @@ const docTemplate = `{
         },
         "/health": {
             "get": {
-                "description": "search engine api",
+                "description": "search engine health",
                 "consumes": [
                     "application/json"
                 ],
@@ -99,7 +99,7 @@ const docTemplate = `{
                 "tags": [
                     "Search"
                 ],
-                "summary": "search engine api",
+                "summary": "search engine health",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -173,20 +173,29 @@ const docTemplate = `{
         "repository.Search": {
             "type": "object",
             "properties": {
-                "age": {
-                    "description": "Age",
+                "include_basic_aggs": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "pit": {
+                    "type": "string",
+                    "example": ""
+                },
+                "query_string": {
+                    "type": "string",
+                    "example": "performance"
+                },
+                "size": {
                     "type": "integer",
                     "example": 10
                 },
-                "id": {
-                    "description": "UserId",
-                    "type": "integer",
-                    "example": 1
-                },
-                "name": {
-                    "description": "Name",
+                "sort_order": {
                     "type": "string",
-                    "example": "John"
+                    "example": "DESC"
+                },
+                "start_date": {
+                    "type": "string",
+                    "example": "2021 01-01 00:00:00"
                 }
             }
         }

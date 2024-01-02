@@ -10,11 +10,13 @@ var (
 )
 
 type Search struct {
-	Id   int    `json:"id" example:"1"`      // UserId
-	Name string `json:"name" example:"John"` // Name
-	Age  int    `json:"age" example:"10"`    // Age
-}
-
+	Include_basic_aggs bool `json:"include_basic_aggs" example:"true"` 
+	Pit string `json:"pit" example:""`
+	Query_string string `json:"query_string" example:"performance"`
+	Size   int    `json:"size" example:"10"`
+	Sort_order string `json:"sort_order" example:"DESC"`
+	Start_date string `json:"start_date" example:"2021 01-01 00:00:00"`
+}	
 
 type APIError struct {
 	ErrorCode    int
