@@ -44,6 +44,51 @@ curl http://localhost:9080/health
 {"time":"2023-12-23T14:40:07.332221-06:00","id":"","remote_ip":"127.0.0.1","host":"localhost:9080","method":"GET","uri":"/health","user_agent":"curl/7.78.0","status":200,"error":"","latency":70208,"latency_human":"70.208µs","bytes_in":0,"bytes_out":14}
 ```
 
+
+#### Build Swag
+```bash
+
+1) 
+# https://wookiist.dev/103
+
+export PATH=$(go env GOPATH)/bin:$PATH
+
+
+# http://localhost:9080/swagger/index.html
+
+$ go get github.com/swaggo/swag/cmd/swag
+$ go get github.com/swaggo/echo-swagger
+
+# https://github.com/swaggo/swag/issues/197
+go install github.com/swaggo/swag/cmd/swag@latest
+
+# or $ swag init -g something.go
+$ swag init 
+
+# You can see directory like docs
+docs
+├── docs.go
+├── swagger.json
+└── swagger.yaml
+
+0 directories, 3 files
+
+
+2) 
+# https://dadev.tistory.com/entry/GO-RESTAPI-%EB%AC%B8%EC%84%9C%ED%99%94-%EB%8F%84%EA%B5%AC-Swagger-Gin-Framework-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0
+
+# http://localhost:9081/docs/index.html
+
+go get -u github.com/swaggo/swag/cmd/swag
+
+swag
+
+go get -u github.com/swaggo/gin-swagger
+go get -u github.com/swaggo/files
+
+
+```
+
 #### Elasticsearh Cluster Diagnostics (Support by Elasticsearch)
 - The support diagnostic utility is a Java application that can interrogate a running Elasticsearch cluster or Logstash process to obtain data about the state of the cluster at that point in time. It is compatible with all versions of Elasticsearch (including alpha, beta and release candidates), and for Logstash versions greater than 5.0, and for Kibana v6.5+. The release version of the diagnostic is independent of the Elasticsearch, Kibana or Logstash version it is being run against.
 - `Diagnostics Guide` <i>(https://olamideolajide.medium.com/how-to-collect-diagnostics-for-a-cloud-elasticsearch-cluster-4a20841a815a, https://github.com/elastic/support-diagnostics/releases/tag/8.0.3)</i>

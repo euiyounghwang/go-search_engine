@@ -1,0 +1,41 @@
+definitions:
+  main.Users:
+    properties:
+      age:
+        description: Age
+        example: 10
+        type: integer
+      id:
+        description: UserId
+        example: 1
+        type: integer
+      name:
+        description: Name
+        example: John
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /hello/{name}:
+    get:
+      consumes:
+      - application/json
+      description: test swagger api
+      parameters:
+      - description: Users name
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.Users'
+        "400":
+          description: Bad Request
+      summary: test swagger api
+swagger: "2.0"

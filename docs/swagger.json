@@ -1,0 +1,62 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/hello/{name}": {
+            "get": {
+                "description": "test swagger api",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "test swagger api",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Users name",
+                        "name": "name",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/main.Users"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "main.Users": {
+            "type": "object",
+            "properties": {
+                "age": {
+                    "description": "Age",
+                    "type": "integer",
+                    "example": 10
+                },
+                "id": {
+                    "description": "UserId",
+                    "type": "integer",
+                    "example": 1
+                },
+                "name": {
+                    "description": "Name",
+                    "type": "string",
+                    "example": "John"
+                }
+            }
+        }
+    }
+}
