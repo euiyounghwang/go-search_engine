@@ -45,7 +45,7 @@ curl http://localhost:9080/health
 ```
 
 
-#### Build Swag
+#### Build Swagger
 ```bash
 
 1) 
@@ -89,9 +89,9 @@ $ swag init
 
 go get -u github.com/swaggo/gin-swagger
 go get -u github.com/swaggo/files
-
-
 ```
+![Alt text](./screenshot/Golang-Swagger.png
+
 
 #### Elasticsearh Cluster Diagnostics (Support by Elasticsearch)
 - The support diagnostic utility is a Java application that can interrogate a running Elasticsearch cluster or Logstash process to obtain data about the state of the cluster at that point in time. It is compatible with all versions of Elasticsearch (including alpha, beta and release candidates), and for Logstash versions greater than 5.0, and for Kibana v6.5+. The release version of the diagnostic is independent of the Elasticsearch, Kibana or Logstash version it is being run against.

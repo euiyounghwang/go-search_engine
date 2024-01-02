@@ -17,6 +17,19 @@ definitions:
 info:
   contact: {}
 paths:
+  /:
+    get:
+      consumes:
+      - application/json
+      description: test swagger api
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+      summary: test swagger api
   /hello/{name}:
     get:
       consumes:

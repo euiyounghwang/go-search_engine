@@ -38,6 +38,7 @@ func main() {
 	// v1Group := r.Group("/api/v1")
 	v1Group := r.Group("/")
 	{
+		v1Group.GET("/", defaultHandler)
 		v1Group.GET("/hello/:name", HelloHandler)
 	}
 	
@@ -53,6 +54,21 @@ type Users struct {
 	Name string `json:"name" example:"John"` // Name
 	Age  int    `json:"age" example:"10"`    // Age
 }
+
+/* 아래 항목이 swagger에 의해 문서화 된다. */
+// HelloHandler godoc
+// @Summary test swagger api
+// @Description test swagger api
+// @name get-string-by-int
+// @Accept  json
+// @Produce  json
+// @Router / [get]
+// @Success 200 
+// @Failure 400
+func defaultHandler(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{"message": "hello world!"})
+}
+
 
 /* 아래 항목이 swagger에 의해 문서화 된다. */
 // HelloHandler godoc
