@@ -24,6 +24,8 @@ go build ./sample/hello.go && ./sample/hello
 go get github.com/labstack/echo/v4
 go get github.com/labstack/echo/v4/middleware
 
+go mod tidy
+
 go-search_engine git:(master) ✗ go run ./main.go                             
 
    ____    __
@@ -89,6 +91,8 @@ $ swag init
 
 go get -u github.com/swaggo/gin-swagger
 go get -u github.com/swaggo/files
+
+go mod tidy
 ```
 ![Alt text](./screenshot/Golang-Swagger.png)
 
