@@ -77,15 +77,12 @@ func SearchHandler(c *gin.Context) {
 	// 	print("exists", es_host, exists)
 	// }
 	es_host, _ := c.Get("ES_HOST")
-	log.Println(es_host, reflect.TypeOf(es_host))
+	log.Println(es_host, reflect.TypeOf(es_host), search, reflect.TypeOf(search))
 		
-	query := `{
-		"track_total_hits" : true,
-		"query": {
-			"match_all" : {}
-		},
-		"size": 2
-	}`
+	// oas_query := search json
+	oas_query := ``
+	query := service.Build_es_query(oas_query)
+	// fmt.Println(query)
 	response_json := service.Build_search(es_host.(string), query)
 	
 	// End Time request
