@@ -3,11 +3,12 @@ package service
 import (
 	"fmt"
 	"go-search_engine/lib/util"
+	"go-search_engine/repository"
 	"log"
 )
 
 
-func Build_es_query(oas_query string) (string, error) {
+func Build_es_query(oas_query repository.Search) (string, error) {
 	log.Println("Build_es_query..")
 	
 	// If no name was given, return an error with a message.
@@ -25,7 +26,7 @@ func Build_es_query(oas_query string) (string, error) {
 			}
 		}
 	]`
-	s_must_clause = fmt.Sprintf(s_must_clause, "performance")
+	s_must_clause = fmt.Sprintf(s_must_clause, oas_query.Query_string)
 	
 	s_query_format := `{
 		"query" : {

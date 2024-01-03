@@ -73,6 +73,9 @@ func SearchHandler(c *gin.Context) {
 		return
 	}
 	
+	// r := &search
+	log.Println(search.Query_string, search.Sort_order)
+	
 	// if es_host, exists := c.Get("ES_HOST"); exists {
 	// 	print("exists", es_host, exists)
 	// }
@@ -80,8 +83,8 @@ func SearchHandler(c *gin.Context) {
 	log.Println(es_host, reflect.TypeOf(es_host), search, reflect.TypeOf(search))
 		
 	// oas_query := search json
-	oas_query := ``
-	query, err := service.Build_es_query(oas_query)
+	// oas_query := ``
+	query, err := service.Build_es_query(search)
 	// fmt.Println(query)
 	if err == nil {
 		log.Println((err))
