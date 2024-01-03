@@ -13,7 +13,7 @@ func Build_es_query(oas_query repository.Search) (string, error) {
 	log.Println("Build_es_query..")
 	
 	// If no name was given, return an error with a message.
-    if oas_query.Query_string == "" {
+    if oas_query == (repository.Search {}) {
         return "", errors.New("oas_query is empty")
     }
 
