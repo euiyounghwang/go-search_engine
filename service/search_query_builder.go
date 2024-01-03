@@ -1,9 +1,20 @@
 package service
 
-import "fmt"
+import (
+	"fmt"
+	"go-search_engine/lib/util"
+	"log"
+)
 
 
-func Build_es_query(oas_query string) string {
+func Build_es_query(oas_query string) (string, error) {
+	log.Println("Build_es_query..")
+	
+	// If no name was given, return an error with a message.
+    // if oas_query == "" {
+    //     return "", errors.New("oas_query is empty")
+    // }
+
 	s_must_clause := `[
 		{
 			"query_string": {
@@ -29,5 +40,9 @@ func Build_es_query(oas_query string) string {
 	
 	es_query := fmt.Sprintf(s_query_format, s_must_clause,)
 	
-	return es_query
+	log.Println("--")
+	log.Printf("es_query : %s", util.PrettyString(es_query))
+	log.Println("--")
+	
+	return es_query, nil
 }

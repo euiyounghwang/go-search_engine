@@ -81,8 +81,11 @@ func SearchHandler(c *gin.Context) {
 		
 	// oas_query := search json
 	oas_query := ``
-	query := service.Build_es_query(oas_query)
+	query, err := service.Build_es_query(oas_query)
 	// fmt.Println(query)
+	if err == nil {
+		log.Println((err))
+	}
 	response_json := service.Build_search(es_host.(string), query)
 	
 	// End Time request
