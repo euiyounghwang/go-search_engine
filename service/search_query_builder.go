@@ -9,6 +9,30 @@ import (
 )
 
 
+func add_highlighting() string {
+	highlight_clauses := `
+		"highlight": {
+			"order": "score",
+			"pre_tags": [
+				"<b>"
+			],
+			"post_tags": [
+				"</b>"
+			],
+			"fields": {
+				"*": {
+					"number_of_fragments": 1,
+					"type": "plain",
+					"fragment_size": 150
+				}
+			}
+		}`
+	
+	return highlight_clauses
+}
+
+
+
 func Build_es_query(oas_query repository.Search) (string, error) {
 	log.Println("Build_es_query..")
 	
@@ -17,19 +41,29 @@ func Build_es_query(oas_query repository.Search) (string, error) {
         return "", errors.New("oas_query is empty")
     }
 
-	s_must_clause := `[
-		{
-			"query_string": {
-				"fields": ["*"],
-				"default_operator": "AND",
-				"analyzer": "standard",
-				"query": "%s"
-			}
-		}
-	]`
-	s_must_clause = fmt.Sprintf(s_must_clause, oas_query.Query_string)
+	s_source_clause := `
+		"_source" : ["*"],
+	`
 	
-	s_query_format := `{
+	s_must_clause := ""
+	if oas_query.Query_string == "" {
+		s_must_clause = `{"match_all": {}}`
+	} else {
+		s_must_clause = `[
+			{
+				"query_string": {
+					"fields": ["*"],
+					"default_operator": "AND",
+					"analyzer": "standard",
+					"query": "%s"
+				}
+			}
+		]`
+	}
+	
+	// s_must_clause = fmt.Sprintf(s_must_clause, oas_query.Query_string)
+	
+	s_query_format := `
 		"query" : {
 			"bool" : {
 				"must": %s,
@@ -37,10 +71,16 @@ func Build_es_query(oas_query repository.Search) (string, error) {
 				"filter": []
 			}
 		},
-		"size": 2
-	}`
-	
-	es_query := fmt.Sprintf(s_query_format, s_must_clause,)
+	`
+	s_size_format := `
+		"size" : %d,
+	`
+	es_query := fmt.Sprintf("{ %s %s %s %s }",
+					s_source_clause,
+					fmt.Sprintf(s_query_format, fmt.Sprintf(s_must_clause, oas_query.Query_string)),
+					fmt.Sprintf(s_size_format, oas_query.Size),
+					add_highlighting(),
+				)
 	
 	log.Println("--")
 	log.Printf("es_query : %s", util.PrettyString(es_query))
