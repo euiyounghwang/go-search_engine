@@ -22,15 +22,10 @@ WORKDIR /root/
 # COPY --from=builder /app/FN-Go-Basic-Services .
 COPY --from=builder /app/FN-Go-Basic-Services .
 
+EXPOSE 9081
+
 CMD ["./FN-Go-Basic-Services"]
 # CMD ["./swagger"]
-
-# Optional:
-# To bind to a TCP port, runtime parameters must be supplied to the docker command.
-# But we can document in the Dockerfile what ports
-# the application is going to listen on by default.
-# https://docs.docker.com/engine/reference/builder/#expose
-EXPOSE 9081
 
 # within Docker
 # apk 
