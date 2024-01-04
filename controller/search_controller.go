@@ -86,7 +86,7 @@ func SearchHandler(c *gin.Context) {
 	// oas_query := ``
 	query, err := service.Build_es_query(search)
 	// fmt.Println(query)
-	if err == nil {
+	if err != nil {
 		log.Println((err))
 	}
 	response_json := service.Build_search(es_host.(string), query)
