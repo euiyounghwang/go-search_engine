@@ -74,7 +74,7 @@ func SearchHandler(c *gin.Context) {
 	}
 	
 	// r := &search
-	log.Println(search.Query_string, search.Sort_order)
+	// log.Println(search.Query_string, search.Sort_order, r.Query_string)
 	
 	// if es_host, exists := c.Get("ES_HOST"); exists {
 	// 	print("exists", es_host, exists)
@@ -96,10 +96,9 @@ func SearchHandler(c *gin.Context) {
 	// execution time
     latencyTime := endTime.Sub(startTime)
 
-	// c.JSON(http.StatusOK, gin.H{"message": "success"})
-	log.Printf("Parsing :  %s", reflect.TypeOf(search))
 	log.Printf("Excuting Time :  %s", latencyTime)
 
+	// c.JSON(http.StatusOK, gin.H{"message": "success"})
 	c.JSON(http.StatusOK, response_json)
 }
 
