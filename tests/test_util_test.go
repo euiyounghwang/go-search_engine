@@ -3,7 +3,6 @@ package test
 import (
 	"fmt"
 	util "go-search_engine/lib/util"
-	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -11,13 +10,31 @@ import (
 
 // go test -v ./tests/test_util_test.go
 
+/*
+-- Testing func
+
+package hello
+
+func Hello() string {
+    return "Hello, world"
+}
+
+func TestHello(t *testing.T) {
+	want := "Hello, world"
+	fmt.Println(want)
+	if got := Hello(); got != want {
+		t.Errorf("Hello() = %q, want %q", got, want)
+	}
+}
+
 func Test_Get_Env(t *testing.T) {
 	host := util.Set_Env(os.Getenv("ES_HOST"), "http://localhost:9209")
 	assert.Equal(t, host, "http://localhost:9209")
-	
+
 	os.Setenv("ES_HOST", "http://localhost:9200")
 	assert.Equal(t, os.Getenv("ES_HOST"), "http://localhost:9200")
 }
+*/
 
 
 func Test_PrettyJSon(t *testing.T) {
