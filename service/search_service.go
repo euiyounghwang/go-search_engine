@@ -13,9 +13,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Build_search(es_host string, query string) map[string]interface{} {
+func Build_search(es_host string, search repository.Search) map[string]interface{} {
 	// es_host := util.Set_Env(os.Getenv("ES_HOST"), "http://localhost:9209")
 	es_client := my_elasticsearch.Get_es_instance(es_host)
+	
+	// oas_query := search json
+	// oas_query := ``
+	query, err := Build_es_query(search)
+	// fmt.Println(query)
+	if err != nil {
+		log.Println((err))
+	}
 	
 	ctx := context.Background()
 	
@@ -29,7 +37,7 @@ func Build_search(es_host string, query string) map[string]interface{} {
 		es_client.Search.WithTrackTotalHits(true),
 		es_client.Search.WithPretty(),
 		es_client.Search.WithFrom(0),
-		es_client.Search.WithSize(1000),
+		es_client.Search.WithSize(search.Size),
 	)
 	if err != nil {
 		log.Fatalf("ERROR: %s", err)

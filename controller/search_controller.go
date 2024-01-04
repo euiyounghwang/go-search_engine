@@ -82,14 +82,7 @@ func SearchHandler(c *gin.Context) {
 	es_host, _ := c.Get("ES_HOST")
 	log.Println(es_host, reflect.TypeOf(es_host), search, reflect.TypeOf(search))
 		
-	// oas_query := search json
-	// oas_query := ``
-	query, err := service.Build_es_query(search)
-	// fmt.Println(query)
-	if err != nil {
-		log.Println((err))
-	}
-	response_json := service.Build_search(es_host.(string), query)
+	response_json := service.Build_search(es_host.(string), search)
 	
 	// End Time request
     endTime := time.Now()
