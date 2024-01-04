@@ -60,7 +60,7 @@ func main() {
     if httpPort == "" {
         httpPort = "9081"
     }
-	r.Run("localhost:" + httpPort)
+	r.Run("0.0.0.0:" + httpPort)
 }
 
 type Users struct {
