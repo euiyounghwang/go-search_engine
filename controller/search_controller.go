@@ -80,9 +80,10 @@ func SearchHandler(c *gin.Context) {
 	// 	print("exists", es_host, exists)
 	// }
 	es_host, _ := c.Get("ES_HOST")
+	index_name, _ := c.Get("Index_Name")
 	log.Println(es_host, reflect.TypeOf(es_host), search, reflect.TypeOf(search))
 		
-	response_json := service.Build_search(es_host.(string), search)
+	response_json := service.Build_search(es_host.(string), index_name.(string), search)
 	
 	// End Time request
     endTime := time.Now()

@@ -2,8 +2,11 @@ package main
 
 import (
 	// "go_swagger/docs"
+	"encoding/json"
+	"fmt"
 	"go-search_engine/docs"
 	"go-search_engine/lib/util"
+	"io/ioutil"
 	"net/http"
 	"os"
 
@@ -14,9 +17,46 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
+// Transform json to struct in Go, https://transform.tools/json-to-go
+type Config struct {
+	App struct {
+		Es struct {
+			EsHost string `json:"es_host"`
+			Index  struct {
+				Alias string `json:"alias"`
+			} `json:"index"`
+		} `json:"es"`
+	} `json:"app"`
+}
+
+func read_yml() Config {
+	
+	yamlFile, err := ioutil.ReadFile("config.yaml")
+    if err != nil {
+    	fmt.Printf("yamlFile.Get err #%v ", err)
+    }
+	
+	config := Config{}
+    if err := json.Unmarshal(yamlFile, &config); err != nil {
+        // do error check
+        fmt.Println(err)
+    }
+
+	fmt.Println("--")
+	fmt.Println("read_yml()")
+    fmt.Println(config)
+	// fmt.Println(config.App.Es.EsHost, config.App.Es.Index.Alias)
+	fmt.Println("--")
+	
+	// fmt.Println(obj["app"].(map[interface {}]interface{})["es"].(map[interface {}]interface{})["es_host"])
+	return config
+}
+
 
 func init_params(c *gin.Context) {
-	c.Set("ES_HOST", util.Set_Env(os.Getenv("ES_HOST"), "http://localhost:9209"))
+	config := read_yml()
+	c.Set("ES_HOST", util.Set_Env(os.Getenv("ES_HOST"), config.App.Es.EsHost))
+	c.Set("Index_Name",config.App.Es.Index.Alias)
 }
 
 /* 아래 항목이 swagger에 의해 문서화 된다. */
@@ -37,6 +77,8 @@ func init_params(c *gin.Context) {
 func main() {
 	r := gin.Default()
 
+	// read_yml()
+	
 	// https://github.com/swaggo/swag/blob/master/README.md
 	docs.SwaggerInfo.Title = "Golang Rest API"
 	
