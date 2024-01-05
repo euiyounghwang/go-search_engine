@@ -48,6 +48,44 @@ func HealthHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, response_json)
 }
 
+type Search_Results struct {
+	Shards struct {
+		Failed     int `json:"failed"`
+		Skipped    int `json:"skipped"`
+		Successful int `json:"successful"`
+		Total      int `json:"total"`
+	} `json:"_shards"`
+	Hits struct {
+		Hits []struct {
+			ID     string  `json:"_id"`
+			Index  string  `json:"_index"`
+			Score  float64 `json:"_score"`
+			Source struct {
+				Timestamp       string  `json:"@timestamp"`
+				ConcurrentUsers string  `json:"concurrent_users"`
+				ElapsedTime     float64 `json:"elapsed_time"`
+				EntityType      string  `json:"entity_type"`
+				Env             string  `json:"env"`
+				SearchIndex     string  `json:"search_index"`
+				Sequence        int     `json:"sequence"`
+				Title           string  `json:"title"`
+			} `json:"_source"`
+			Highlight struct {
+				EntityType   []string `json:"entity_type"`
+				Title        []string `json:"title"`
+				TitleKeyword []string `json:"title.keyword"`
+			} `json:"highlight"`
+		} `json:"hits"`
+		MaxScore float64 `json:"max_score"`
+		Total    struct {
+			Relation string `json:"relation"`
+			Value    int    `json:"value"`
+		} `json:"total"`
+	} `json:"hits"`
+	TimedOut bool `json:"timed_out"`
+	Took     int  `json:"took"`
+}
+
 // SearchHandler godoc
 // @Summary search engine api
 // @tags Search
@@ -91,7 +129,7 @@ func SearchHandler(c *gin.Context) {
     latencyTime := endTime.Sub(startTime)
 
 	log.Printf("Excuting Time :  %s", latencyTime)
-
+	
 	// c.JSON(http.StatusOK, gin.H{"message": "success"})
 	c.JSON(http.StatusOK, response_json)
 }
