@@ -189,9 +189,136 @@ docker run --rm -it -d \
 
 #### Unit-Test
 ```bash
-➜  go-search_engine git:(master) ✗ ./unit_test.sh
-=== RUN   Test_elastic
---- PASS: Test_elastic (0.03s)
+ go-search_engine git:(master) ✗ ./unit_test.sh
+2024/01/04 22:07:35 Set_Env :  http://localhost:9209
+=== RUN   TestHealthCheckHandler
+&{GET /health HTTP/1.1 1 1 map[Tracing-Id:[123]] {} <nil> 0 [] false example.com map[] map[] <nil> map[] 192.0.2.1:1234 /health <nil> <nil> <nil> <nil>}
+&{200 map[Content-Type:[application/json] Tracing-Id:[123]] {"alive": true} false <nil> map[Tracing-Id:[123]] true}
+--- PASS: TestHealthCheckHandler (0.00s)
+=== RUN   TestCreateUser
+=== RUN   TestCreateUser/should_return_200_status_ok
+&{0x1400012e300 0x140000a6420  [] [] map[] 0x102833150 map[] 0x140000dcb40 <nil> {{0 0} 0 0 {{} 0} {{} 0}}}
+--- PASS: TestCreateUser (0.00s)
+    --- PASS: TestCreateUser/should_return_200_status_ok (0.00s)
+=== RUN   Test_elasticsearch_instance_status
+2024/01/04 22:07:35 [200 OK] {
+  "name" : "b3abf1a35c5e",
+  "cluster_name" : "docker-cluster",
+  "cluster_uuid" : "jOgcAwsGR0OXuS-C-x-Ung",
+  "version" : {
+    "number" : "8.8.0",
+    "build_flavor" : "default",
+    "build_type" : "docker",
+    "build_hash" : "c01029875a091076ed42cdb3a41c10b1a9a5a20f",
+    "build_date" : "2023-05-23T17:16:07.179039820Z",
+    "build_snapshot" : false,
+    "lucene_version" : "9.6.0",
+    "minimum_wire_compatibility_version" : "7.17.0",
+    "minimum_index_compatibility_version" : "7.0.0"
+  },
+  "tagline" : "You Know, for Search"
+}
+
+--- PASS: Test_elasticsearch_instance_status (0.00s)
+=== RUN   Test_elasticsearch_configuration_to_local
+2024/01/04 22:07:35 [200 OK] 
+2024/01/04 22:07:35 [200 OK] 
+2024/01/04 22:07:35 try_create_index - {
+    "acknowledged": true,
+    "shards_acknowledged": true,
+    "index": "test_ngram_v1"
+}
+2024/01/04 22:07:35 ioUtil  
+2024/01/04 22:07:35 res.Body type -  *http.gzipReader
+2024/01/04 22:07:35 body type -  []uint8
+2024/01/04 22:07:35 Uint8_to_Map type -  map[string]interface {}
+2024/01/04 22:07:35 Json : map[acknowledged:%!s(bool=true) index:test_ngram_v1 shards_acknowledged:%!s(bool=true)], parsing : test_ngram_v1, %!s(bool=true)
+2024/01/04 22:07:35 try_create_index - {
+    "acknowledged": true,
+    "shards_acknowledged": true,
+    "index": "test_performance_metrics_v1"
+}
+2024/01/04 22:07:35 ioUtil  
+2024/01/04 22:07:35 res.Body type -  *http.gzipReader
+2024/01/04 22:07:35 body type -  []uint8
+2024/01/04 22:07:35 Uint8_to_Map type -  map[string]interface {}
+2024/01/04 22:07:35 Json : map[acknowledged:%!s(bool=true) index:test_performance_metrics_v1 shards_acknowledged:%!s(bool=true)], parsing : test_performance_metrics_v1, %!s(bool=true)
+2024/01/04 22:07:35 [200 OK] {"acknowledged":true}
+2024/01/04 22:07:35 Index_with_document - {
+    "_index": "test_performance_metrics_v1",
+    "_id": "111",
+    "_version": 1,
+    "result": "created",
+    "forced_refresh": true,
+    "_shards": {
+        "total": 1,
+        "successful": 1,
+        "failed": 0
+    },
+    "_seq_no": 0,
+    "_primary_term": 1
+}
+--- PASS: Test_elasticsearch_configuration_to_local (0.21s)
+=== RUN   Test_elasticsearch_api
+2024/01/04 22:07:35 Test_elasticsearch_api  [200 OK] {"_index":"test_performance_metrics_v1","_id":"111","_version":1,"_seq_no":0,"_primary_term":1,"found":true,"_source":{
+                                "title" :  "performance",
+                                "elapsed_time": 0.3,
+                                "sequence": 1,
+                                "entity_type": "performance",
+                                "env" :  "dev",
+                                "concurrent_users" :  "20",
+                                "search_index" :  "test_performance_metrics_v1",
+                                "@timestamp" : "2023-01-01 00:00:00"
+                                }} *http.gzipReader
+2024/01/04 22:07:35 response_map : map[_id:111 _index:test_performance_metrics_v1 _primary_term:%!s(float64=1) _seq_no:%!s(float64=0) _source:map[@timestamp:2023-01-01 00:00:00 concurrent_users:20 elapsed_time:%!s(float64=0.3) entity_type:performance env:dev search_index:test_performance_metrics_v1 sequence:%!s(float64=1) title:performance] _version:%!s(float64=1) found:%!s(bool=true)]
+--- PASS: Test_elasticsearch_api (0.00s)
+=== RUN   Test_elasticsearch_search
+2024/01/04 22:07:35 [200 OK] {
+  "took" : 0,
+  "timed_out" : false,
+  "_shards" : {
+    "total" : 1,
+    "successful" : 1,
+    "skipped" : 0,
+    "failed" : 0
+  },
+  "hits" : {
+    "total" : {
+      "value" : 1,
+      "relation" : "eq"
+    },
+    "max_score" : 1.0,
+    "hits" : [
+      {
+        "_index" : "test_performance_metrics_v1",
+        "_id" : "111",
+        "_score" : 1.0,
+        "_source" : {
+          "title" : "performance",
+          "elapsed_time" : 0.3,
+          "sequence" : 1,
+          "entity_type" : "performance",
+          "env" : "dev",
+          "concurrent_users" : "20",
+          "search_index" : "test_performance_metrics_v1",
+          "@timestamp" : "2023-01-01 00:00:00"
+        }
+      }
+    ]
+  }
+}
+
+2024/01/04 22:07:35 [200 OK] 1 hits; took: 0ms
+#$%% map[@timestamp:2023-01-01 00:00:00 concurrent_users:20 elapsed_time:0.3 entity_type:performance env:dev search_index:test_performance_metrics_v1 sequence:1 title:performance]
+#$%% test_performance_metrics_v1
+simple test k 0 v map[_id:111 _index:test_performance_metrics_v1 _score:1 _source:map[@timestamp:2023-01-01 00:00:00 concurrent_users:20 elapsed_time:0.3 entity_type:performance env:dev search_index:test_performance_metrics_v1 sequence:1 title:performance]]
+--- PASS: Test_elasticsearch_search (0.00s)
+=== RUN   Test_Get_Env
+2024/01/04 22:07:35 Set_Env :  http://localhost:9209
+--- PASS: Test_Get_Env (0.00s)
+=== RUN   Test_PrettyJSon
+{"track_total_hits" : true,"query": {"match_all" : {}},"size": 2}
+--- PASS: Test_PrettyJSon (0.00s)
 PASS
-ok      go-search_engine/tests  0.142s
+ok      github.com/euiyounghwang/go-search_engine/tests 0.341s
 ```

@@ -14,8 +14,8 @@ import (
 	"testing"
 
 	// elasticsearch "github.com/elastic/go-elasticsearch/v8"
-	my_elasticsearch "go-search_engine/lib/elasticsearch"
-	util "go-search_engine/lib/util"
+	my_elasticsearch "github.com/euiyounghwang/go-search_engine/lib/elasticsearch"
+	util "github.com/euiyounghwang/go-search_engine/lib/util"
 
 	"github.com/stretchr/testify/assert"
 	// my_elasticsearch "github.com/euiyounghwang/go-search_engine/lib"

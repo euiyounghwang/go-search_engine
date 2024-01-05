@@ -2,9 +2,10 @@ package test
 
 import (
 	"fmt"
-	util "go-search_engine/lib/util"
 	"os"
 	"testing"
+
+	util "github.com/euiyounghwang/go-search_engine/lib/util"
 
 	"github.com/stretchr/testify/assert"
 )
