@@ -3,9 +3,14 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
+	"reflect"
+	"runtime"
+
+	"github.com/euiyounghwang/go-search_engine/repository"
 )
 
 type Post struct {
@@ -14,6 +19,41 @@ type Post struct {
 	Body   string `json:"body"`
 	UserId int    `json:"userId"`
 }
+
+
+func Struct_Iterate_Rows(body []uint8) {
+	/*
+	Iterate body using Struct for search results
+	*/
+	
+	fmt.Println("--")
+	var jsonMap map[string]interface{}
+	json.Unmarshal([]byte(string(body) ), &jsonMap)
+	log.Println(jsonMap)
+	fmt.Println("--")
+	fmt.Println()
+	
+	// using Struct
+	result := repository.Search_Results{}
+	if err := json.Unmarshal(body, &result); err != nil {
+        // do error check
+        fmt.Println(err)
+    }
+	
+	fmt.Println("--")
+	// fmt.Println((result))
+	log.Printf("The number of documents: %d", result.Hits.Total.Value)
+	
+	fmt.Printf("[%s func] result.Hits.Hits", runtime.FuncForPC(reflect.ValueOf(Struct_Iterate_Rows).Pointer()).Name())
+	for i, rows := range result.Hits.Hits {
+		fmt.Println("sequence : ", i+1)
+		fmt.Println("rows.Source.Title : ", rows.Source.SearchIndex)
+		fmt.Println("rows.Source.Title : ", rows.Source.SearchIndex)
+	}
+	fmt.Println("--")
+	fmt.Println()
+}
+
 
 func main() {
 	posturl := "http://localhost:9081/es/search"
@@ -50,13 +90,10 @@ func main() {
 	}
 	
 	// log.Println(resp.Body)
-	
 	body, _ := io.ReadAll(resp.Body)
-	var jsonMap map[string]interface{}
-	json.Unmarshal([]byte(string(body) ), &jsonMap)
 	
-	log.Println(jsonMap)
-
+	Struct_Iterate_Rows(body)
+	
 	defer func() {
 		if err := resp.Body.Close(); err != nil {
 			log.Fatalf("Error closing response body: %v", err)
