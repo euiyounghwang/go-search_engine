@@ -86,6 +86,11 @@ func main() {
 	
     // 127.0.0.1:8080/docs/index.html 주로 swagger로 생성된 문서를 확인 수 있다. 
 	r.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	
+	r.GET("/test", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"data": "hello world"})    
+	  })
+	
 
 	// v1Group := r.Group("/api/v1")
 	v1Group := r.Group("/")
