@@ -2,6 +2,7 @@ package repository
 
 import "errors"
 
+// https://transform.tools/json-to-go
 
 var (
     IndexNameEmptyStringError = errors.New("index name cannot be empty string")
