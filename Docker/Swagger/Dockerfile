@@ -21,7 +21,6 @@ WORKDIR /root/
 
 # COPY --from=builder /app/FN-Go-Basic-Services .
 COPY --from=builder /app/FN-Go-Basic-Services .
-COPY --from=builder /app/config.yaml .
 
 EXPOSE 9081
 
