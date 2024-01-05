@@ -5,8 +5,8 @@ set -eu
 SCRIPTDIR="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 echo $SCRIPTDIR
 
-# --rm
-docker run  -it -d \
+
+docker run --rm -it -d \
   --name go-search_engine-api --publish 9077:9081 --expose 9081 \
   --network bridge \
   -e ES_HOST=http://host.docker.internal:9209 \

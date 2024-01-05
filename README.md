@@ -165,6 +165,30 @@ go-search_engine git:(master) ✗ ./go_convey.sh
 ![Alt text](./screenshot/Go-Convey.png)
 
 
+## Docker build
+```
+docker build \
+  -f "$(dirname "$0")/Dockerfile" \
+  -t go-search_engine-api:es \
+  --target runtime \
+  "$(dirname "$0")/."
+```
+![Alt text](screenshot/image.png)
+
+
+## Docker run
+```
+docker run --rm -it -d \
+  --name go-search_engine-api --publish 9077:9081 --expose 9081 \
+  --network bridge \
+  -e ES_HOST=http://host.docker.internal:9209 \
+  -v "$SCRIPTDIR:/app" \
+  go-search_engine-api:es
+```
+
+![Alt text](./screenshot/Docker-go-search-engine.png)
+
+
 #### Unit-Test
 ```bash
 ➜  go-search_engine git:(master) ✗ ./unit_test.sh
