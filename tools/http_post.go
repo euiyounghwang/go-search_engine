@@ -13,13 +13,6 @@ import (
 	"github.com/euiyounghwang/go-search_engine/repository"
 )
 
-type Post struct {
-	Id     int    `json:"id"`
-	Title  string `json:"title"`
-	Body   string `json:"body"`
-	UserId int    `json:"userId"`
-}
-
 
 func Struct_Iterate_Rows(body []uint8) {
 	/*
