@@ -357,7 +357,7 @@ services:
       dockerfile: Dockerfile
       target: runtime
     ports:
-      - 9088:9080
+      - 9077:9080
     volumes:
       - ${PROJECTS_DIR}/go-search_engine:/app
     restart: unless-stopped
