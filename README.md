@@ -173,8 +173,6 @@ docker build \
   --target runtime \
   "$(dirname "$0")/."
 ```
-![Alt text](screenshot/image.png)
-
 
 ## Docker run
 ```
