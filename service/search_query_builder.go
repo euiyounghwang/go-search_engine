@@ -3,9 +3,10 @@ package service
 import (
 	"errors"
 	"fmt"
-	"go-search_engine/lib/util"
-	"go-search_engine/repository"
 	"log"
+
+	"github.com/euiyounghwang/go-search_engine/lib/util"
+	"github.com/euiyounghwang/go-search_engine/repository"
 )
 
 

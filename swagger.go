@@ -4,13 +4,15 @@ import (
 	// "go_swagger/docs"
 	"encoding/json"
 	"fmt"
-	"go-search_engine/docs"
-	"go-search_engine/lib/util"
 	"io/ioutil"
 	"net/http"
 	"os"
 
-	controller "go-search_engine/controller"
+	"github.com/euiyounghwang/go-search_engine/docs"
+
+	"github.com/euiyounghwang/go-search_engine/lib/util"
+
+	controller "github.com/euiyounghwang/go-search_engine/controller"
 
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"

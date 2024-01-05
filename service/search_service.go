@@ -4,14 +4,16 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	my_elasticsearch "go-search_engine/lib/elasticsearch"
-	"go-search_engine/lib/util"
-	"go-search_engine/repository"
 	"io"
 	"log"
 	"reflect"
 	"runtime"
 	"strings"
+
+	my_elasticsearch "github.com/euiyounghwang/go-search_engine/lib/elasticsearch"
+	"github.com/euiyounghwang/go-search_engine/repository"
+
+	"github.com/euiyounghwang/go-search_engine/lib/util"
 
 	"github.com/gin-gonic/gin"
 )
