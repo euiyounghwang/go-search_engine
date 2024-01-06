@@ -10,12 +10,12 @@ import (
 
 // User struct
 type Message struct {
-    message string `json:"message"`
+    Message string `json:"message"`
 }
 
 type User struct {
-    name string `json:"name"`
-    age int `json:"age"`
+    Name string `json:"name"`
+    Age int `json:"age"`
 }
 
 /*
