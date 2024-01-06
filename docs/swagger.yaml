@@ -51,6 +51,8 @@ paths:
         "400":
           description: Bad Request
       summary: test swagger api
+      tags:
+      - API
   /es/search:
     post:
       consumes:
@@ -125,4 +127,6 @@ paths:
         "400":
           description: Bad Request
       summary: test swagger api
+      tags:
+      - API
 swagger: "2.0"

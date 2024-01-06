@@ -24,6 +24,9 @@ const docTemplate = `{
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "API"
+                ],
                 "summary": "test swagger api",
                 "responses": {
                     "200": {
@@ -124,6 +127,9 @@ const docTemplate = `{
                 ],
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "API"
                 ],
                 "summary": "test swagger api",
                 "parameters": [

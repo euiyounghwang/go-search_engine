@@ -119,6 +119,7 @@ type Users struct {
 }
 
 /* 아래 항목이 swagger에 의해 문서화 된다. */
+// @tags API
 // HelloHandler godoc
 // @Summary test swagger api
 // @Description test swagger api
@@ -134,6 +135,7 @@ func defaultHandler(c *gin.Context) {
 
 /*
 // SearchHandler godoc
+// @tags API
 // @Summary search engine api
 // @tags Search
 // @Description search engine api
@@ -149,6 +151,7 @@ func SearchHandler(c *gin.Context) {
 */
 
 /* 아래 항목이 swagger에 의해 문서화 된다. */
+// @tags API
 // HelloHandler godoc
 // @Summary test swagger api
 // @Description test swagger api
