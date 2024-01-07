@@ -74,6 +74,7 @@ func Build_es_query(oas_query repository.Search) (string, error) {
 	// s_must_clause = fmt.Sprintf(s_must_clause, oas_query.Query_string)
 	
 	s_query_format := `
+		"track_total_hits": true,
 		"query" : {
 			"bool" : {
 				"must": %s,

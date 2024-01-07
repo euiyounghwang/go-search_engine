@@ -84,4 +84,24 @@ func Test_terms_filters_batch(t *testing.T) {
 	}      
 	`
 	assert.Equal(t, util.PrettyString(util.ReplaceStr(returns_terms_filters)), util.PrettyString(util.ReplaceStr(expected_terms_filters)))
+	
+	
+	
+	ids_filter = ""
+	_max_len = 2
+	returns_terms_filters = util.Build_terms_filters_batch(ids_filter, _max_len)
+	expected_terms_filters = `
+	{
+		"bool": {
+		  "must": [
+			{
+			  "bool": {
+				"should": [
+				]
+			  }
+			}]
+		}
+	}	  
+	`
+	assert.Equal(t, util.PrettyString(util.ReplaceStr(returns_terms_filters)), util.PrettyString(util.ReplaceStr(expected_terms_filters)))
 }
