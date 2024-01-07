@@ -8,7 +8,6 @@ import (
 	"strings"
 )
 
-
 func Set_Env(initial_str string, replace_str string) (string) {
 	transform_str := initial_str
 	if initial_str == "" {
