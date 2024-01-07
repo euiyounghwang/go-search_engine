@@ -56,8 +56,6 @@ func Build_terms_filters_batch(_term string, max_terms_count int) string {
 	}
 	
 	var _terms_filters_clause string
-	
-	
 	if len(_terms_array) <= max_terms_count {
 		_terms_filters_clause = fmt.Sprintf(_terms_filters, sb.String())
 	} else {
