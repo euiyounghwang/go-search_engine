@@ -180,13 +180,9 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "ids_filter": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    },
-                    "example": [
-                        "performance"
-                    ]
+                    "description": "IdsFilter        []string ` + "`" + `json:\"ids_filter\"\"` + "`" + `",
+                    "type": "string",
+                    "example": "111,222"
                 },
                 "include_basic_aggs": {
                     "type": "boolean",
@@ -207,6 +203,10 @@ const docTemplate = `{
                 "sort_order": {
                     "type": "string",
                     "example": "DESC"
+                },
+                "source_fields": {
+                    "type": "string",
+                    "example": "*"
                 },
                 "start_date": {
                     "type": "string",

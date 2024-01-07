@@ -47,9 +47,13 @@ func Build_es_query(oas_query repository.Search) (string, error) {
         return "", errors.New("oas_query is empty")
     }
 	
-	s_source_clause := `
-		"_source" : ["*"],
-	`
+	var s_source_clause string
+	if oas_query.Source_fields == "" || oas_query.Source_fields == "*" {
+		s_source_clause = `"_source" : ["*"],`
+	} else {
+		s_source_clause = fmt.Sprintf(`"_source" : [%s],`, util.Build_split_string_array(oas_query.Source_fields))
+	}
+
 	
 	s_must_clause := ""
 	if oas_query.Query_string == "" {
@@ -74,16 +78,30 @@ func Build_es_query(oas_query repository.Search) (string, error) {
 			"bool" : {
 				"must": %s,
 				"should" : [],
-				"filter": []
+				"filter": [
+					{
+						"bool" : {
+							"must" : [
+								
+							]
+						}
+					},
+					%s
+				]
 			}
 		},
 	`
+	s_query_format = fmt.Sprintf(s_query_format, 
+								fmt.Sprintf(s_must_clause, oas_query.Query_string),
+								util.Build_terms_filters_batch(oas_query.IdsFilter, -1),
+							)
+	
 	s_size_format := `
 		"size" : %d,
 	`
 	es_query := fmt.Sprintf("{ %s %s %s %s }",
 					s_source_clause,
-					fmt.Sprintf(s_query_format, fmt.Sprintf(s_must_clause, oas_query.Query_string)),
+					s_query_format,
 					fmt.Sprintf(s_size_format, oas_query.Size),
 					add_highlighting(),
 				)

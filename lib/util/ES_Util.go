@@ -6,7 +6,25 @@ import (
 )
 
 /*
-input :  "111", '222'
+INPUT : "111, 222"
+OUTPUT : "111", "222"
+*/
+func Build_split_string_array(s string) string {
+	var sb strings.Builder
+	s_array := strings.Split(s, ",")
+	
+	for index, element := range s_array {
+		sb.WriteString(`"` + element + `"`)
+		if index != len(s_array)-1 {
+			sb.WriteString(`,`)		
+		}	
+	}
+	
+	return sb.String()
+}
+
+/*
+input :  "111, 222"
 output :
 [
 	{

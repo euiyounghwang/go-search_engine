@@ -17,11 +17,9 @@ definitions:
   repository.Search:
     properties:
       ids_filter:
-        example:
-        - performance
-        items:
-          type: string
-        type: array
+        description: IdsFilter        []string `json:"ids_filter""`
+        example: 111,222
+        type: string
       include_basic_aggs:
         example: true
         type: boolean
@@ -36,6 +34,9 @@ definitions:
         type: integer
       sort_order:
         example: DESC
+        type: string
+      source_fields:
+        example: '*'
         type: string
       start_date:
         example: 2021 01-01 00:00:00
