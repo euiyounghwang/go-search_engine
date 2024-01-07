@@ -16,6 +16,12 @@ definitions:
     type: object
   repository.Search:
     properties:
+      ids_filter:
+        example:
+        - performance
+        items:
+          type: string
+        type: array
       include_basic_aggs:
         example: true
         type: boolean

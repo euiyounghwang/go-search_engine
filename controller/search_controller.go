@@ -82,7 +82,11 @@ func SearchHandler(c *gin.Context) {
 	// }
 	es_host, _ := c.Get("ES_HOST")
 	index_name, _ := c.Get("Index_Name")
-	log.Println(es_host, reflect.TypeOf(es_host), search, reflect.TypeOf(search))
+	log.Println(es_host, reflect.TypeOf(es_host), search, reflect.TypeOf(search), search.IdsFilter)
+	
+	// for _, m := range search.IdsFilter {
+	// 	fmt.Println(m)
+	// }
 		
 	response_json := service.Build_search(es_host.(string), index_name.(string), search)
 	

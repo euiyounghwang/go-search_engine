@@ -59,3 +59,4 @@ func Test_PrettyJSon(t *testing.T) {
 	// fmt.Println(expected_query)
 	assert.Equal(t, transformed_query_string, expected_query)
 }
+

@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"reflect"
 
 	"github.com/euiyounghwang/go-search_engine/lib/util"
 	"github.com/euiyounghwang/go-search_engine/repository"
@@ -38,10 +39,14 @@ func Build_es_query(oas_query repository.Search) (string, error) {
 	log.Println("Build_es_query..")
 	
 	// If no name was given, return an error with a message.
-    if oas_query == (repository.Search {}) {
+    // if oas_query == (repository.Search {}) {
+    //     return "", errors.New("oas_query is empty")
+    // }
+
+	if reflect.ValueOf(oas_query).IsZero() {
         return "", errors.New("oas_query is empty")
     }
-
+	
 	s_source_clause := `
 		"_source" : ["*"],
 	`

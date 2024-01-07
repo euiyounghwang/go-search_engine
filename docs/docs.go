@@ -179,6 +179,15 @@ const docTemplate = `{
         "repository.Search": {
             "type": "object",
             "properties": {
+                "ids_filter": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "performance"
+                    ]
+                },
                 "include_basic_aggs": {
                     "type": "boolean",
                     "example": true

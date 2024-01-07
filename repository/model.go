@@ -11,7 +11,8 @@ var (
 )
 
 type Search struct {
-	Include_basic_aggs bool `json:"include_basic_aggs" example:"true"` 
+	IdsFilter        []string `json:"ids_filter" example:"performance"`
+	Include_basic_aggs bool `json:"include_basic_aggs" example:"true"`
 	Pit string `json:"pit" example:""`
 	Query_string string `json:"query_string" example:"performance"`
 	Size   int    `json:"size" example:"10"`
