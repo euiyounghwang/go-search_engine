@@ -95,6 +95,10 @@ func Build_terms_filters_batch(_term string, max_terms_count int) string {
 	}		  
 	`
 	well_formed_terms_filtered_batch := fmt.Sprintf(_terms_filters_format, _terms_filters_clause)
-	fmt.Printf("Build_terms_filters_batch [max_terms_count : %d] - %s\n",  max_terms_count, PrettyString(string(well_formed_terms_filtered_batch)))
+	fmt.Printf(
+		"Build_terms_filters_batch [max_terms_count : %d] - %s\n",  
+		max_terms_count, 
+		PrettyString(string(well_formed_terms_filtered_batch)),
+	)
 	return well_formed_terms_filtered_batch
 }
