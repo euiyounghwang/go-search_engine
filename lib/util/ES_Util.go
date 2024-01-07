@@ -59,11 +59,11 @@ func Build_terms_filters_batch(_term string, max_terms_count int) string {
 			}
 		}	
 		`
-		fmt.Printf("Build_terms_filters_batch [_term : %s, max_terms_count : %d] - %s\n",  
-			_term,
-			max_terms_count, 
-			PrettyString(_terms_filters_nothing),
-		)
+		// fmt.Printf("Build_terms_filters_batch [_term : %s, max_terms_count : %d] - %s\n",  
+		// 	_term,
+		// 	max_terms_count, 
+		// 	PrettyString(_terms_filters_nothing),
+		// )
 		return _terms_filters_nothing
 	}
 	
