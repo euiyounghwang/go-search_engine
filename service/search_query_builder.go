@@ -81,13 +81,16 @@ func Build_es_query(oas_query repository.Search) (string, error) {
 				"should" : [],
 				"filter": [
 					{
-						"bool" : {
-							"must" : [
-								
+						"bool": {
+							"must": [
+								{
+									"bool": {
+										"should": %s
+									}
+								}
 							]
 						}
-					},
-					%s
+					}
 				]
 			}
 		},

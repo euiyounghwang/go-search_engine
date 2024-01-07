@@ -46,19 +46,7 @@ output :
 func Build_terms_filters_batch(_term string, max_terms_count int) string {
 	
 	if _term == "" {
-		_terms_filters_nothing :=  `
-		{
-			"bool": {
-			  "must": [
-				{
-				  "bool": {
-					"should": [
-					]
-				  }
-				}]
-			}
-		}	
-		`
+		_terms_filters_nothing :=  `[]`
 		// fmt.Printf("Build_terms_filters_batch [_term : %s, max_terms_count : %d] - %s\n",  
 		// 	_term,
 		// 	max_terms_count, 
@@ -102,20 +90,9 @@ func Build_terms_filters_batch(_term string, max_terms_count int) string {
 		_terms_filters_clause = sb.String()
 	}
 	
-	_terms_filters_format := `
-	{
-		"bool": {
-		  "must": [
-			{
-			  "bool": {
-				"should": [
-					%s
-				]
-			  }
-			}]
-		}
-	}		  
-	`
+	_terms_filters_format := `[
+		%s
+	]`
 	
 	well_formed_terms_filtered_batch := fmt.Sprintf(_terms_filters_format, _terms_filters_clause)
 	fmt.Printf(
@@ -124,5 +101,6 @@ func Build_terms_filters_batch(_term string, max_terms_count int) string {
 		max_terms_count, 
 		PrettyString(string(well_formed_terms_filtered_batch)),
 	)
+	
 	return well_formed_terms_filtered_batch
 }

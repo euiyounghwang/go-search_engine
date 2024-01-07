@@ -22,6 +22,7 @@ func ReplaceStr(str string) (string) {
 	transformed_strg = strings.Replace(transformed_strg, "\t\t", " ", -1)
 	transformed_strg = strings.Replace(transformed_strg, " ", "", -1)
 	transformed_strg = strings.Replace(transformed_strg, "\t", "", -1)
+	transformed_strg = strings.Replace(transformed_strg, "\n", "", -1)
 	return transformed_strg
 }
 
