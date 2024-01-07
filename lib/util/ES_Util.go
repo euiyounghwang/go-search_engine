@@ -74,8 +74,7 @@ func Build_terms_filters_batch(_term string, max_terms_count int) string {
 					%s
 				]
 			  }
-			}
-			]
+			}]
 		}
 	}		  
 	`
