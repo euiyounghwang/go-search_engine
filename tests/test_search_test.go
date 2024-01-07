@@ -49,6 +49,10 @@ func Test_terms_filters_batch(t *testing.T) {
 	`
 	assert.Equal(t, util.PrettyString(util.ReplaceStr(returns_terms_filters)), util.PrettyString(util.ReplaceStr(expected_terms_filters)))
 	
+	_max_len = 0
+	returns_terms_filters = util.Build_terms_filters_batch(ids_filter, _max_len)
+	assert.Equal(t, util.PrettyString(util.ReplaceStr(returns_terms_filters)), util.PrettyString(util.ReplaceStr(expected_terms_filters)))
+	
 	_max_len = 1
 	returns_terms_filters = util.Build_terms_filters_batch(ids_filter, _max_len)
 	expected_terms_filters = `
