@@ -59,8 +59,8 @@ func Build_es_query(oas_query repository.Search) (string, error) {
 	
 	// Build Source Clause
 	s_source_clause := build_source_clause(oas_query)
+	// Build must Clause
 	s_must_clause := build_must_clauses(oas_query)
-	fmt.Println(s_must_clause)
 	
 	es_query_format := `
 	{
